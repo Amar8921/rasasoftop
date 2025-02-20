@@ -1,0 +1,26 @@
+Attendance Reasons
+Student Attendance
+Staff Attendance
+Class Wise Attendance
+Staff Attendance Report
+Staff Attendance - All
+Event Transport Allocation
+Staff Transport Details Report
+Student Transport Details Report
+Student-Staff Combined Transport Report
+Transport Details Report
+Barcode Generation
+Library Book Condition
+Library Book Status
+Library Dashboard
+Library Transaction Types
+Class wise 3 year performance report
+Class wise student Achievement Report
+Class Wise Student-Teacher Ratio
+Class Wise Student List
+Progress Report 10
+Progress Report 12
+Progress Report 6-8
+Progress Report KG
+Collect Fees
+Meetings

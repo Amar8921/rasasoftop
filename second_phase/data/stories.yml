@@ -1,0 +1,33 @@
+version: "3.1"
+
+stories:
+  - story: User requests a report with a list
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: request_report
+      - action: utter_ask_list
+      - intent: need_list
+      - action: utter_ask_search_term
+      - intent: search_term
+        entities:
+          - search_query: "attendance"
+      - action: action_fetch_menu_names
+      - intent: select_menu
+        entities:
+          - menu_name: "Staff Attendance Report"
+      - action: action_fetch_action_link
+
+  - story: User requests a report without a list
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: request_report
+      - action: utter_ask_list
+      - intent: no_list
+      - action: utter_no_list
+
+  - story: Fallback story
+    steps:
+      - intent: nlu_fallback
+      - action: utter_default # Use the default response you defined

@@ -1,0 +1,74 @@
+version: "3.1"
+
+nlu:
+  - intent: greet
+    examples: |
+      - hi
+      - hello
+      - hey
+      - good morning
+      - good evening
+
+  - intent: request_report
+    examples: |
+      - I need a report
+      - Can you get me a report?
+      - I want a report
+
+  - intent: need_list
+    examples: |
+      - Yes, I need a list
+      - I want a list
+      - yes
+      - yeah
+
+  - intent: no_list
+    examples: |
+      - No, I don't need a list
+      - No
+      - Not really
+
+  - intent: search_term
+    examples: |
+      - Search for [attendance](search_query)
+      - search for [progressreport](search_query)
+      - search for [meetings](search_query)
+      - Find [fees](search_query)
+      - Look up [transport](search_query)
+      - Show me [library](search_query)
+      - search for [classwise](search_query)]
+
+  - intent: select_menu
+    examples: |
+      - [Attendance Reasons](menu_name)
+      - [Student attendance](menu_name)
+      - [Staff attendance](menu_name)
+      - [Class Wise Attendance](menu_name)
+      - [Staff Attendance Report](menu_name)
+      - [Staff Attendance - All](menu_name)
+      - [Event Transport Allocation](menu_name)
+      - [Staff Transport Details Report](menu_name)
+      - [Student Transport Details Report](menu_name)
+      - [Student-Staff Combined Transport Report](menu_name)
+      - [Transport Details Report](menu_name)
+      - [Barcode Generation](menu_name)
+      - [Library Book Condition](menu_name)
+      - [Library Book Status](menu_name)
+      - [Library Dashboard](menu_name)
+      - [Library Transaction Types](menu_name)
+      - [Class wise 3 year performance report](menu_name)
+      - [Class wise student Achievement Report](menu_name)
+      - [Class Wise Student-Teacher Ratio](menu_name)
+      - [Class Wise Student List](menu_name)
+      - [Progress Report 10](menu_name)
+      - [Progress Report 12](menu_name)
+      - [Progress Report 6-8](menu_name)
+      - [Progress Report KG](menu_name)
+      - [Collect Fees](menu_name))
+      - [Meetings](menu_name)
+  - regex: select_menu
+    examples: |
+      - Class wise .* report
+
+
+

@@ -1,0 +1,32 @@
+version: "3.1"
+
+rules:
+  - rule: Greet user
+    steps:
+      - intent: greet
+      - action: utter_greet
+
+  - rule: Ask if user needs a list
+    steps:
+      - intent: request_report
+      - action: utter_ask_list
+
+  - rule: User says no list
+    steps:
+      - intent: no_list
+      - action: utter_no_list
+  - rule: Handle menu selection
+    steps:
+      - intent: select_menu
+      - action: action_fetch_action_link
+
+  - rule: yes_list
+    steps:
+      - intent: need_list
+      - action: utter_ask_search_term
+
+  - rule: searching
+    steps:
+      - intent: search_term
+      - action: action_fetch_menu_names
+

@@ -1,0 +1,15 @@
+{
+  "attendance": "attendance",
+  "fees": "fees",
+  "library": "library",
+  "transport": "transport",
+  "category": "category",
+  "meetings": "meetings",
+  "attendance reasons": "Attendance Reasons",
+  "student attendance": "Student Attendance",
+  "staff transport details report": "Staff Transport Details Report",
+  "student transport details report": "Student Transport Details Report",
+  "classwise attendance ": "Classwise Attendance ",
+  "class wise attendance": "Class wise Attendance",
+  "staff attendance report": "Staff Attendance Report"
+}

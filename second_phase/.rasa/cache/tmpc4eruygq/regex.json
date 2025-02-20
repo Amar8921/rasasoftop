@@ -1,0 +1,10 @@
+[
+  {
+    "name": "menu_name",
+    "pattern": "(\\bAttendance\\ Reasons\\b|\\bStudent\\ Attendance\\b|\\bStudent\\ Transport\\ Details\\ Report\\b)"
+  },
+  {
+    "name": "search_query",
+    "pattern": "(\\battendance\\b|\\bprogress\\ report\\b|\\bmeetings\\b|\\bfees\\b|\\blibrary\\b|\\btransport\\b|\\bclasswise\\b|\\bcategory\\b)"
+  }
+]
