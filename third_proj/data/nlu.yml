@@ -1,0 +1,188 @@
+version: "3.1"
+
+nlu:
+  - intent: greet
+    examples: |
+      - hi
+      - hello
+      - hey
+      - good morning
+      - good evening
+
+  - intent: request_report
+    examples: |
+      - I need a report
+      - Can you get me a report?
+      - I want a report
+
+  - intent: need_list
+    examples: |
+      - Yes, I need a list
+      - I want a list
+      - yes
+      - yeah
+
+  - intent: no_list
+    examples: |
+      - No, I don't need a list
+      - No
+      - Not really
+
+  - intent: search_term
+    examples: |
+      - Search for [attendance](search_query)
+      - Find [fees](search_query)
+      - Show me [library](search_query)
+      - Look up [transport](search_query)
+      - search for [category](search_query)
+      - search for [meetings](search_query)
+      - Search for [student](search_query)            # Basic "Search for"
+      - search for [progressreport](search_query)
+      - search for [marks](search_query)         # Different report type
+      - Find [fees](search_query)                      # Using "Find" verb
+      - Find me [fees](search_query)                   # Adding "me"
+      - Find details about [fees](search_query)           # More descriptive "details about"
+      - Look up [transport](search_query)                # Using "Look up" verb
+      - Look up information on [transport](search_query)   # Adding "information on"
+      - Show me [library](search_query)                 # Using "Show me" verb
+      - Show me details for [library](search_query)      # Adding "details for"
+      - Display [library](search_query)                  # Using "Display" verb (synonym for "show")
+      - Can you find [attendance](search_query)         # Question format "Can you find"
+      - Could you look up [transport](search_query)      # Question "Could you look up"
+      - I need to search [fees](search_query)            # "I need to search"
+      - I want to find [library](search_query)           # "I want to find"
+      - I am looking for [attendance](search_query)      # "I am looking for"
+      - Get me [fees](search_query)                      # "Get me"
+      - Get a list of [transport](search_query)         # "Get a list of"
+      - Provide [library](search_query)                 # "Provide" verb
+      - Give me [attendance](search_query)                # "Give me"
+      - Access [fees](search_query)                       # "Access" verb
+      - I want [attendance] list                         # Shorter "I want ... list"
+      - [fees] details please                           # Very short, "details please" at end
+      - [library] information                          # Short, just entity + keyword
+      - [transport] lookup                             # Very short, keyword association
+      - Tell me about [meetings](search_query)            # "Tell me about"
+      - What about [category](search_query)               # "What about"
+      - Search about [marks](search_query)          # More formal "Inquire about"
+      - I'd like to inquire about [fees](search_query)   # Formal, "I'd like to inquire about"
+      - Let me see [library](search_query)               # "Let me see"
+      - Enquire [transport](search_query)                 # UK spelling of "Inquire", for broader coverage
+
+  - intent: select_menu
+    examples: |
+      - [Attendance Reasons](menu_name) 
+      - [Student Attendance](menu_name) 
+      - [Student Transport Details Report](menu_name) 
+      - [Staff Transport Details Report](menu_name)
+      - [Classwise Attendance](menu_name) 
+      - [Class wise Attendance](menu_name)
+      - [class wise attendance](menu_name)
+      - [Staff Attendance Report](menu_name)
+      - [Meetings](menu_name)
+      - [Collect Fees](menu_name)
+      - [Library Book Category](menu_name)
+      - [Library Book Condition](menu_name)
+      - [Barcode Generation](menu_name)
+      - [Library Book Status](menu_name)
+      - [Library Transaction Types](menu_name)
+      - [Class wise student Achievement Report](menu_name)
+      - [Intra campus consolidated report](menu_name)
+      - [Class wise 3 year performance report](menu_name)
+      - [Class Wise Student-Teacher Ratio](menu_name)
+      - [Class Wise Student List](menu_name)
+      - [Progress Report 10](menu_name)
+      - [Progress Report 12](menu_name)
+      - [Progress Report 6-8](menu_name)
+      - [Progress Report KG](menu_name)
+      - [Assign Student Group](menu_name)
+      - [Fine Master Student](menu_name)
+      - [Student 3rd Language Summary](menu_name)
+      - [Student Effective Strength Report](menu_name)
+      - [Student Language Subject Map Report](menu_name)
+      - [Student TC](menu_name)
+      - [Students Admission Detailed Report](menu_name)
+      - [Students Timetable](menu_name)
+      - [Stock Updation](menu_name)
+      - [Stock Verification](menu_name)
+      - [Stock Difference - Branch](menu_name)
+      - [Stock Ledger Report](menu_name)
+      - [Stock Transfer Detail Report](menu_name)
+      - [Exam results](menu_name)
+      - [Exam result entry](menu_name)
+      - [Product type and Item wise](menu_name)
+      - [Purchase - Product wise](menu_name)
+
+     
+  # - intent: ask_help
+  #   examples: |
+  #     - How do I use this bot?
+  #     - Explain how this works.
+  #     - What are the main features?
+  #     - Can you guide me?
+  #     - I need some help understanding this.
+  #     - What are my options? (general options, not report options)
+  #     - Help me get started.
+  #     - Give me a quick tutorial.
+  #     - Walk me through the process.
+  #     - Tell me what this bot can do.
+
+  # Regex features should be defined at the top level, not under nlu:
+regex:
+  - name: select_menu
+    pattern: "(Attendance|Student|Staff) .* (Report|Details)"
+  - name: menu_name_hyphenated
+    ppattern: "[a-zA-Z0-9\\s\\-]+(?:\\s*-\\s*[a-zA-Z0-9\\s\\-]+)*"
+
+  - lookup: menu_name
+    examples: |
+      - Attendance Reasons
+      - Student Attendance
+      - Student Transport Details Report
+      - Staff Transport Details Report
+      - Classwise Attendance
+      - Staff Attendance Report
+      - Meetings
+      - Collect Fees
+      - Library Book Category
+      - Library Book Condition
+      - Barcode Generation
+      - Library Book Status
+      - Library Transaction Types
+      - Classwise Student Achievement Report
+      - Intra campus consolidated report
+      - Class wise 3 year performance report
+      - Class Wise Student-Teacher Ratio
+      - Class Wise Student List
+      - Progress Report 10
+      - Progress Report 12
+      - Progress Report 6-8
+      - Progress Report KG
+      - Assign Student Group
+      - Fine Master Student
+      - Student 3rd Language Summary
+      - Student Effective Strength Report
+      - Student Language Subject Map Report
+      - Student TC
+      - Students Admission Detailed Report
+      - Students Timetable
+      - Stock Updation
+      - Stock Verification
+      - Stock Difference - Branch  # HYPHENATED ITEM
+      - Stock Ledger Report
+      - Stock Transfer Detail Report
+      - Exam results
+      - Exam result entry
+      - Product type and Item wise
+      - Purchase - Product wise   
+
+  - lookup: search_query
+    examples: |
+      - attendance
+      - progress report
+      - meetings
+      - fees
+      - library
+      - transport
+      - classwise
+      - category
+      - student

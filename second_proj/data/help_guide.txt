@@ -1,0 +1,46 @@
+📌 **Chatbot Guide for Generating Reports**  
+Welcome! You can interact with this chatbot to retrieve reports easily.  
+Follow the steps below to get the report you need.  
+
+---
+
+📝 **How to Request a Report?**  
+1️⃣ Say **"Hi"** to start the conversation.  
+2️⃣ Ask for a report by saying **"I need a report"**.  
+3️⃣ The bot will ask if you need a **list of reports**. Reply with **"Yes" or "No"**.  
+4️⃣ If **"Yes"**, enter a keyword (e.g., **"attendance"**) to search for relevant reports.  
+5️⃣ Choose a report from the displayed list.  
+6️⃣ The bot will provide a **link** to navigate to the selected report.  
+
+---
+
+📂 **Available Reports**  
+
+- **Attendance Reports**  
+  - Attendance Reasons  
+  - Staff Attendance  
+  - Student Attendance  
+
+- **Class Reports**  
+  - Class Wise Attendance  
+  - Staff Attendance - All  
+
+- **Detailed Reports**  
+  - Staff Attendance Report  
+  - Students Attendance  
+
+---
+
+💬 **Example Conversation**  
+
+👤 **User:** Hi  
+🤖 **Bot:** Hey! What do you need?  
+
+👤 **User:** I need a report  
+🤖 **Bot:** Do you need a list? Yes or No?  
+
+👤 **User:** Yes  
+🤖 **Bot:** Search a term to get the list.  
+
+👤 **User:** Search for attendance  
+🤖 **Bot:** Here are the available options:  

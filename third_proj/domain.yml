@@ -1,0 +1,64 @@
+version: "3.1"
+
+intents:
+  - greet
+  - request_report
+  - need_list
+  - no_list
+  - search_term
+  - select_menu
+  # - ask_help
+
+entities:
+  - search_query
+  - menu_name
+
+slots:
+  search_query:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: search_query
+
+  menu_name:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: menu_name
+
+responses:
+  utter_greet:
+    - text: "Hey! What do you need?"
+
+  utter_ask_list:
+    - text: "Do you need a list? Yes or No?"
+
+  utter_ask_search_term:
+    - text: "Search a term to get the list."
+
+  utter_ask_select_menu:
+    - text: "Please select an option from the list."
+
+  utter_no_list:
+    - text: "Okay, let me know how else I can help."
+
+  utter_default: # Define a default response for fallback
+    - text: "Sorry, I didn't understand that. Could you please rephrase?"
+    - text: "I'm not sure what you mean. Can you try saying it differently?"
+    - text: "Hmm, I'm having trouble understanding. Could you try another way?"
+
+  utter_goodbye:
+    - text: "Goodbye!"
+
+actions:
+  - action_fetch_menu_names
+  - action_fetch_action_link
+  - action_default_fallback
+  - action_provide_help
+
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

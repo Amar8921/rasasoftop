@@ -1,0 +1,10 @@
+[
+  {
+    "name": "menu_name",
+    "pattern": "(\\bAttendance\\ Reasons\\b|\\bStudent\\ Attendance\\b|\\bStudent\\ Transport\\ Details\\ Report\\b|\\bStaff\\ Transport\\ Details\\ Report\\b|\\bClasswise\\ Attendance\\b|\\bStaff\\ Attendance\\ Report\\b|\\bMeetings\\b|\\bCollect\\ Fees\\b|\\bLibrary\\ Book\\ Category\\b|\\bLibrary\\ Book\\ Condition\\b|\\bBarcode\\ Generation\\b|\\bLibrary\\ Book\\ Status\\b|\\bLibrary\\ Transaction\\ Types\\b|\\bClasswise\\ Student\\ Achievement\\ Report\\b|\\bIntra\\ campus\\ consolidated\\ report\\b|\\bClass\\ wise\\ 3\\ year\\ performance\\ report\\b|\\bClass\\ Wise\\ Student\\-Teacher\\ Ratio\\b|\\bClass\\ Wise\\ Student\\ List\\b|\\bProgress\\ Report\\ 10\\b|\\bProgress\\ Report\\ 12\\b|\\bProgress\\ Report\\ 6\\-8\\b|\\bProgress\\ Report\\ KG\\b|\\bAssign\\ Student\\ Group\\b|\\bFine\\ Master\\ Student\\b|\\bStudent\\ 3rd\\ Language\\ Summary\\b|\\bStudent\\ Effective\\ Strength\\ Report\\b|\\bStudent\\ Language\\ Subject\\ Map\\ Report\\b|\\bStudent\\ TC\\b|\\bStudents\\ Admission\\ Detailed\\ Report\\b|\\bStudents\\ Timetable\\b|\\bStock\\ Updation\\b|\\bStock\\ Verification\\b|\\bStock\\ Difference\\ \\-\\ Branch\\ \\ \\#\\ HYPHENATED\\ ITEM\\b|\\bStock\\ Ledger\\ Report\\b|\\bStock\\ Transfer\\ Detail\\ Report\\b|\\bExam\\ results\\b|\\bExam\\ result\\ entry\\b|\\bProduct\\ type\\ and\\ Item\\ wise\\b|\\bPurchase\\ \\-\\ Product\\ wise\\b)"
+  },
+  {
+    "name": "search_query",
+    "pattern": "(\\battendance\\b|\\bprogress\\ report\\b|\\bmeetings\\b|\\bfees\\b|\\blibrary\\b|\\btransport\\b|\\bclasswise\\b|\\bcategory\\b|\\bstudent\\b)"
+  }
+]
