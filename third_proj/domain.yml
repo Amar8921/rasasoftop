@@ -29,11 +29,11 @@ slots:
         entity: menu_name
 
 responses:
-  utter_greet:
-    - text: "Hey! What do you need?"
+  # utter_greet:
+  #   - text: "Hey! What do you need?"
 
-  utter_ask_list:
-    - text: "Do you need a list? Yes or No?"
+  # utter_ask_list:
+  #   - text: "Do you need a list? Yes or No?"
 
   utter_ask_search_term:
     - text: "Search a term to get the list."
@@ -56,8 +56,9 @@ actions:
   - action_fetch_menu_names
   - action_fetch_action_link
   - action_default_fallback
-  - action_provide_help
-
+  # - action_provide_help
+  - action_yes_no_list
+  - action_utter_report
 
 session_config:
   session_expiration_time: 60

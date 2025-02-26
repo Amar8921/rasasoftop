@@ -8,6 +8,7 @@ nlu:
       - hey
       - good morning
       - good evening
+    
 
   - intent: request_report
     examples: |
@@ -36,37 +37,37 @@ nlu:
       - Look up [transport](search_query)
       - search for [category](search_query)
       - search for [meetings](search_query)
-      - Search for [student](search_query)            # Basic "Search for"
+      - Search for [student](search_query)            
       - search for [progressreport](search_query)
-      - search for [marks](search_query)         # Different report type
-      - Find [fees](search_query)                      # Using "Find" verb
-      - Find me [fees](search_query)                   # Adding "me"
-      - Find details about [fees](search_query)           # More descriptive "details about"
-      - Look up [transport](search_query)                # Using "Look up" verb
-      - Look up information on [transport](search_query)   # Adding "information on"
-      - Show me [library](search_query)                 # Using "Show me" verb
-      - Show me details for [library](search_query)      # Adding "details for"
-      - Display [library](search_query)                  # Using "Display" verb (synonym for "show")
-      - Can you find [attendance](search_query)         # Question format "Can you find"
-      - Could you look up [transport](search_query)      # Question "Could you look up"
-      - I need to search [fees](search_query)            # "I need to search"
-      - I want to find [library](search_query)           # "I want to find"
-      - I am looking for [attendance](search_query)      # "I am looking for"
-      - Get me [fees](search_query)                      # "Get me"
-      - Get a list of [transport](search_query)         # "Get a list of"
-      - Provide [library](search_query)                 # "Provide" verb
-      - Give me [attendance](search_query)                # "Give me"
-      - Access [fees](search_query)                       # "Access" verb
-      - I want [attendance] list                         # Shorter "I want ... list"
-      - [fees] details please                           # Very short, "details please" at end
-      - [library] information                          # Short, just entity + keyword
-      - [transport] lookup                             # Very short, keyword association
-      - Tell me about [meetings](search_query)            # "Tell me about"
-      - What about [category](search_query)               # "What about"
-      - Search about [marks](search_query)          # More formal "Inquire about"
-      - I'd like to inquire about [fees](search_query)   # Formal, "I'd like to inquire about"
-      - Let me see [library](search_query)               # "Let me see"
-      - Enquire [transport](search_query)                 # UK spelling of "Inquire", for broader coverage
+      - search for [marks](search_query)         
+      - Find [fees](search_query)                      
+      - Find me [fees](search_query)                  
+      - Find details about [fees](search_query)          
+      - Look up [transport](search_query)               
+      - Look up information on [transport](search_query)   
+      - Show me [library](search_query)                
+      - Show me details for [library](search_query)     
+      - Display [library](search_query)                  
+      - Can you find [attendance](search_query)        
+      - Could you look up [transport](search_query)     
+      - I need to search [fees](search_query)           
+      - I want to find [library](search_query)          
+      - I am looking for [attendance](search_query)     
+      - Get me [fees](search_query)                     
+      - Get a list of [transport](search_query)       
+      - Provide [library](search_query)               
+      - Give me [attendance](search_query)               
+      - Access [fees](search_query)                     
+      - I want [attendance] list                        
+      - [fees] details please                          
+      - [library] information                        
+      - [transport] lookup                           
+      - Tell me about [meetings](search_query)            
+      - What about [category](search_query)               
+      - Search about [marks](search_query)      
+      - I'd like to inquire about [fees](search_query)  
+      - Let me see [library](search_query)              
+      - Enquire [transport](search_query)                 
 
   - intent: select_menu
     examples: |
@@ -186,3 +187,40 @@ regex:
       - classwise
       - category
       - student
+  - synonym: fees
+    examples: |
+      - fee
+      - charges
+      - tuition
+      - finance
+
+  - synonym: attendance
+    examples: |
+      - present
+      - absent
+      - attendance record
+      - roll call
+      - presence
+      - participation
+
+  - synonym: transport
+    examples: |
+      - bus
+      - vehicle
+      - transportation
+      - travel
+      - commute
+      - school bus
+  - synonym: student
+    examples: |
+      - pupils
+      - learners
+      - children
+      - kids
+      - scholars
+  - synonym: report
+    examples: |
+      - record
+      - data
+      - stats
+      - statistics

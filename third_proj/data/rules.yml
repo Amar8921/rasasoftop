@@ -4,17 +4,19 @@ rules:
   - rule: Greet user
     steps:
       - intent: greet
-      - action: utter_greet
+      # - action: utter_greet
+      - action: action_utter_report
 
   - rule: Ask if user needs a list
     steps:
       - intent: request_report
-      - action: utter_ask_list
+      - action: action_yes_no_list
 
   - rule: User says no list
     steps:
       - intent: no_list
       - action: utter_no_list
+
   - rule: Handle menu selection
     steps:
       - intent: select_menu
@@ -24,6 +26,7 @@ rules:
     steps:
       - intent: need_list
       - action: utter_ask_search_term
+      # - action: action_utter_report
 
   - rule: searching
     steps:

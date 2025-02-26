@@ -4,9 +4,10 @@ stories:
   - story: User requests a report with a list
     steps:
       - intent: greet
-      - action: utter_greet
+      # - action: utter_greet
+      - action: action_utter_report
       - intent: request_report
-      - action: utter_ask_list
+      - action: action_yes_no_list
       - intent: need_list
       - action: utter_ask_search_term
       - intent: search_term
@@ -21,9 +22,10 @@ stories:
   - story: User requests a report without a list
     steps:
       - intent: greet
-      - action: utter_greet
+      # - action: utter_greet
+      - action: action_utter_report
       - intent: request_report
-      - action: utter_ask_list
+      - action: action_yes_no_list
       - intent: no_list
       - action: utter_no_list
 

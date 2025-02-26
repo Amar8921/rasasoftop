@@ -9,8 +9,7 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import UserUtteranceReverted
 import requests
 from spellchecker import SpellChecker  # Import SpellChecker
-
-
+from rasa_sdk.events import SessionStarted, ActionExecuted
 
 # Database connection function
 def get_db_connection():
@@ -42,6 +41,20 @@ class ActionFetchMenuNames(Action):
             search_query = corrected_query # Use corrected query for DB search
         else:
             print(f"No correction needed for search query: '{search_query}'") # Log no correction
+
+        synonyms = {
+            "fee": "fees","charges": "fees", "tuition": "fees","finance": "fees",
+            "present": "attendance", "absent": "attendance", "roll call": "attendance", "presence": "attendance","participation": "attendance",
+            "bus": "transport", "vehicle": "transport", "transportation": "transport", "travel": "transport", "commute": "transport","school bus": "transport",
+            "pupils": "student", "learners": "student", "children": "student", "kids": "student", "scholars": "student",
+            "record": "report", "data": "report","stats": "report", "statistics": "report"
+        }
+
+        # Check if search query is a synonym and map it to the standard term
+        if search_query.lower() in synonyms:
+            original_query = search_query
+            search_query = synonyms[search_query.lower()]
+            print(f"Mapped synonym '{original_query}' to standard term '{search_query}'")
 
         try:
             conn = get_db_connection() # Replace with your actual connection function
@@ -166,6 +179,37 @@ class ActionDefaultFallback(Action):
         # Revert the user's last message to keep conversation flow natural
         return [UserUtteranceReverted()]
     
+class ActionUtterYesNoMenu(Action):
+    def name(self) -> str:
+        return "action_yes_no_list"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain):
+        dispatcher.utter_message(
+            text="Do you need a list?",  # Optional text message
+            json_message={
+                "type": "conformation",
+                "confirmation": [ # Or "confirmation_options"
+                    {"choices": ["Yes", "No"]}  # Structure as a list of dictionaries, similar to your existing menu action. "Options" can be a type/category name.
+                ]
+            }
+        )
+        return []
+
+class ActionUtterINeedReportMenu(Action):  # Renamed the Action class for clarity
+    def name(self) -> str:
+        return "action_utter_report" # Renamed action name to be more descriptive
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain):
+        dispatcher.utter_message(
+            text="What do you want to do?",  # Optional text message to provide context
+            json_message={
+                "type": "text_popup",  # Keeping "menu_popup" type for consistency, or you can use "action_button" as discussed below
+                "menu_options": [      # Using "menu_options" for clarity, or you can use "choices", etc.
+                    {"actions": ["I need a report"]} #  Using "actions" as the key for the single option. Or use "choices" if you prefer.
+                ]
+            }
+        )
+        return []
 # class ActionProvideHelp(Action):
 #     def name(self):
 #         return "action_provide_help"
