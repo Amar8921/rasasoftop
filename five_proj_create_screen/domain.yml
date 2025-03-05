@@ -1,0 +1,86 @@
+version: "3.1"
+
+intents:
+  - greet
+  - request_report
+  - need_list
+  - no_list
+  - search_term
+  - select_menu
+  - report_preference_choice  # New intent for user's "list" or "create" choice
+
+entities:
+  - search_query
+  - menu_name
+  # - report_type
+  - report_preference # New entity to capture "list" or "create" preference
+
+slots:
+  search_query:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: search_query
+
+  menu_name:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: menu_name
+
+  # report_type: # Still used, but might be set programmatically in actions too
+  #   type: text
+  #   influence_conversation: false # No need to influence conversation directly from entity, action will handle it.
+  #   mappings:
+  #     - type: from_entity
+  #       entity: report_type
+
+  report_preference: # Slot to store user's choice of "list" or "create"
+    type: categorical
+    values:
+      - list
+      - create
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: report_preference
+        intent: report_preference_choice # Only fill from report_preference_choice intent
+
+responses:
+  utter_ask_search_term:
+    - text: "Search for a term to get the list. (e.g., Search for attendance)"
+    - text: "Please enter a search term to find the relevant list.(e.g., Search for transport)"
+    - text: "What would you like to search for? (e.g., Search for class)"
+
+  utter_ask_select_menu:
+    - text: "Please select an option from the list."
+    - text: "Choose one of the available options."
+    - text: "Pick an option from the list to proceed."
+
+  utter_no_list:
+    - text: "Okay, no worries! Let me know if you need anything else."
+    - text: "No problem! I'm here if you need help with something else."
+    - text: "Alright! Feel free to ask if you need assistance later."
+
+  utter_default: # Default response fohir fallback
+    - text: "Sorry, I didn't understand that. Could you please rephrase?"
+    - text: "I'm not sure what you mean. Can you try saying it differently?"
+    - text: "Hmm, I'm having trouble understanding. Could you try another way?"
+    - text: "Apologies, but I didn't get that. Can you clarify?"
+    - text: "I'm having a little trouble understanding. Could you explain differently?"
+  utter_goodbye:
+    - text: "Goodbye!"
+
+actions:
+  - action_fetch_menu_names
+  - action_ask_list_or_create # Or action_handle_menu_selection (if renamed in actions.py)
+  - action_default_fallback
+  - action_yes_no_list
+  - action_utter_report
+
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

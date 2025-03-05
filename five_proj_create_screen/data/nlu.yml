@@ -131,22 +131,16 @@ nlu:
       - [Caution Deposit Refundable](menu_name)
       - [Budget - Trial Balance](menu_name)
       - [Budget - Balance Sheet](menu_name)
+      - [category](menu_name)
+      - [Driver Location](menu_name)
 
-     
-  # - intent: ask_help
-  #   examples: |
-  #     - How do I use this bot?
-  #     - Explain how this works.
-  #     - What are the main features?
-  #     - Can you guide me?
-  #     - I need some help understanding this.
-  #     - What are my options? (general options, not report options)
-  #     - Help me get started.
-  #     - Give me a quick tutorial.
-  #     - Walk me through the process.
-  #     - Tell me what this bot can do.
+  - intent: report_preference_choice
+    examples: |
+      - [create](report_preference)
+      - [list](report_preference)
+      - [report](report_preference)
+      - [details](report_preference)
 
-  # Regex features should be defined at the top level, not under nlu:
 regex:
   - name: select_menu
     pattern: "(Attendance|Student|Staff) .* (Report|Details)"

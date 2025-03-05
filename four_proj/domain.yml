@@ -8,6 +8,7 @@ intents:
   - search_term
   - select_menu
   # - ask_help
+  - inform
 
 entities:
   - search_query
@@ -28,6 +29,19 @@ slots:
       - type: from_entity
         entity: menu_name
 
+  report_name:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: report_name
+  requested_slot:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: custom
+
+
 responses:
   # utter_greet:
   #   - text: "Hey! What do you need?"
@@ -36,7 +50,7 @@ responses:
   #   - text: "Do you need a list? Yes or No?"
 
   utter_ask_search_term:
-    - text: "Search a term to get the list.(ex. Search for attendance)"
+    - text: "Search a term to get the list."
 
   utter_ask_select_menu:
     - text: "Please select an option from the list."
@@ -59,6 +73,9 @@ actions:
   # - action_provide_help
   - action_yes_no_list
   - action_utter_report
+  - action_get_report_parameters
+  - action_ask_report_parameter
+  - action_generate_report
 
 session_config:
   session_expiration_time: 60

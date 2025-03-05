@@ -1,0 +1,47 @@
+version: "3.1"
+
+rules:
+
+  - rule: Greet user
+    steps:
+      - intent: greet
+      - action: action_utter_report
+
+  - rule: Ask if user needs a list
+    steps:
+      - intent: request_report
+      - action: action_yes_no_list
+
+  - rule: User says yes to list
+    steps:
+      - intent: need_list
+      - action: utter_ask_search_term
+
+  - rule: Ask for search term
+    steps:
+      - intent: search_term
+      - action: action_fetch_menu_names
+
+  - rule: Selecting menu name
+    steps:
+      - intent: select_menu
+      - action: action_fetch_action_link
+      - action: action_ask_report_parameter # Ask for parameters after selecting menu
+
+  - rule: Handle report parameters
+    steps:
+      - intent: inform # User provides input
+      - action: action_get_report_parameters # Process the parameter
+      - action: action_ask_report_parameter # Ask for the next parameter (or finish)
+
+  - rule: User says no to list
+    steps:
+      - intent: no_list
+      - action: utter_no_list
+
+  - rule: Generate report after parameters collected
+    steps:
+      - action: action_ask_report_parameter  # This will check for *unfilled* parameters
+      - slot_was_set:  # IMPORTANT: Check if requested_slot is NULL
+          - requested_slot: null
+      - action: action_generate_report # All parameters filled, now generate

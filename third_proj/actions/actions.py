@@ -43,7 +43,6 @@ class ActionFetchMenuNames(Action):
             print(f"No correction needed for search query: '{search_query}'") # Log no correction
 
         synonyms = {
-            "fee": "fees","charges": "fees", "tuition": "fees","finance": "fees",
             "present": "attendance", "absent": "attendance", "roll call": "attendance", "presence": "attendance","participation": "attendance",
             "bus": "transport", "vehicle": "transport", "transportation": "transport", "travel": "transport", "commute": "transport","school bus": "transport",
             "pupils": "student", "learners": "student", "children": "student", "kids": "student", "scholars": "student",

@@ -29,6 +29,17 @@ nlu:
       - No
       - Not really
 
+  - intent: inform  # General inform examples
+    examples: |
+      - [footer](requested_slot)
+      - My answer is [class 10](requested_slot)
+      - It's [42](requested_slot)
+      - I choose [2024](requested_slot)
+
+  - regex: requested_slot  # ADD THIS SECTION
+    examples: |
+      - /.*/
+
   - intent: search_term
     examples: |
       - Search for [attendance](search_query)
@@ -67,8 +78,7 @@ nlu:
       - Search about [marks](search_query)      
       - I'd like to inquire about [fees](search_query)  
       - Let me see [library](search_query)              
-      - Enquire [transport](search_query)   
-      - search for [trial](search_query)              
+      - Enquire [transport](search_query)                 
 
   - intent: select_menu
     examples: |
@@ -113,24 +123,6 @@ nlu:
       - [Exam result entry](menu_name)
       - [Product type and Item wise](menu_name)
       - [Purchase - Product wise](menu_name)
-      - [Academic Calendar](menu_name)
-      - [Fee Collection Daily](menu_name)
-      - [Caution Deposit Refundable](menu_name)
-      - [Fee Income - Tuition Fees](menu_name)
-      - [Advance Tuition Fee](menu_name)
-      - [Transport Nominal Roll](menu_name)
-      - [Salary File](menu_name)
-      - [Employee ID Card](menu_name)
-      - [Employees  Report](menu_name)
-      - [Chart Of Accounts](menu_name)
-      - [Cash / Bank](menu_name)
-      - [General Entries](menu_name)
-      - [Aging Detailed](menu_name)
-      - [Cost Center Detailed](menu_name)
-      - [Tax Detailed](menu_name)
-      - [Caution Deposit Refundable](menu_name)
-      - [Budget - Trial Balance](menu_name)
-      - [Budget - Balance Sheet](menu_name)
 
      
   # - intent: ask_help
@@ -194,24 +186,6 @@ regex:
       - Exam result entry
       - Product type and Item wise
       - Purchase - Product wise   
-      - Academic Calendar
-      - Fee Collection Daily
-      - Caution Deposit Refundable
-      - Fee Income - Tuition Fees
-      - Advance Tuition Fee
-      - Transport Nominal Roll
-      - Salary File
-      - Employee ID Card
-      - Employees  Report
-      - Chart Of Accounts
-      - Cash / Bank
-      - General Entries
-      - Aging Detailed
-      - Cost Center Detailed
-      - Tax Detailed
-      - Caution Deposit Refundable
-      - Budget - Trial Balance
-      - Budget - Balance Sheet
 
   - lookup: search_query
     examples: |
@@ -224,9 +198,12 @@ regex:
       - classwise
       - category
       - student
-      - marks
-      - trial
-      
+  - synonym: fees
+    examples: |
+      - fee
+      - charges
+      - tuition
+      - finance
 
   - synonym: attendance
     examples: |

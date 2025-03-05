@@ -1,0 +1,37 @@
+version: "3.1"
+
+rules:
+  - rule: Greet user and ask report need
+    steps:
+      - intent: greet
+      - action: action_utter_report
+
+  - rule: Ask if user needs a list when report requested
+    steps:
+      - intent: request_report
+      - action: action_yes_no_list
+
+  - rule: User says no list
+    steps:
+      - intent: no_list
+      - action: utter_no_list
+
+  - rule: Handle menu selection
+    steps:
+      - intent: select_menu
+      - action: action_ask_list_or_create # This action now handles conditional "list or create" question
+
+  - rule: Handle report preference choice (List or Create)
+    steps:
+      - intent: report_preference_choice
+      - action: action_ask_list_or_create # Or action_handle_menu_selection (if combined action)
+
+  - rule: Search for menu after user wants a list
+    steps:
+      - intent: need_list
+      - action: utter_ask_search_term
+
+  - rule: Fetch menu names when search term is provided
+    steps:
+      - intent: search_term
+      - action: action_fetch_menu_names

@@ -1,0 +1,33 @@
+recipe: default.v1
+
+assistant_id: 20250218-182801-irregular-hotrod
+
+language: en
+
+pipeline:
+  # - name: WhitespaceTokenizer
+  - name: SpacyNLP  # Add SpacyNLP component here
+    model: "en_core_web_sm"  # Specify the SpaCy language model
+  - name: SpacyTokenizer
+  - name: RegexEntityExtractor
+    use_lookup_tables: True
+    use_regexes: True
+    use_word_boundaries: True  # Optional, but can help with better matching
+    case_sensitive: False  # Might want to add this for case-insensitive matching
+    regexes:
+      - name: menu_name
+        pattern: menu_name_hyphenated
+  - name: LexicalSyntacticFeaturizer
+  - name: CountVectorsFeaturizer
+  - name: DIETClassifier
+    constrain_similarities: True
+    epochs: 100
+  - name: EntitySynonymMapper
+  - name: FallbackClassifier
+    threshold: 0.7  # Confidence threshold for fallback
+
+policies:
+  - name: RulePolicy
+    core_fallback_action_name: "action_default_fallback"
+    core_fallback_threshold: 0.7
+    enable_fallback_prediction: True

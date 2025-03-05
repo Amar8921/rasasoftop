@@ -1,0 +1,573 @@
+Category
+Products
+Products (Online version)
+Customers
+Price List
+Suppliers
+Banners
+Stock-in
+News
+Delivery Tracking
+Static Page
+Brands
+Notification List
+Notify Me Request List
+Logins
+Purchase Order
+Purchase Invoice
+Product Family
+Product Property
+Product type and Item wise
+Order Recommendation
+Inventory Movement
+Supplier wise Stock Report
+Supplier wise Product Sales & Stock Report
+Stock Report
+Category Branch Wise Summary
+Branch Wise Summary Report
+Online Transaction
+Account Master
+Web analytics
+Chart of Accounts
+Account Group Master
+Employee
+Global Settings
+Screen Settings
+Branch
+Branch Group
+Department
+Employee Ticket Entitilement
+Workflow
+Admin Portal
+Purchase Return
+Service Entry
+Sales Order
+Sales Invoice
+FOC sales
+Sales Return
+Branch Transfer Request
+Payfort
+Knet
+Master Visa
+Pay Pal
+Branch Transfer
+Dashbaord
+Locations
+Jobs
+Receiving
+Put-away
+Picking
+Stock-out
+Packing
+Receiving
+Bank Reconciliation
+Dashbaord
+Smart View - Area
+Smart View - Product
+Claims
+Claim Sets
+Document Type
+Baskets
+Inventory Details
+Delivery TimeSlots
+Routes
+Drivers
+Driver Location
+Vehicle
+Service Providers
+Area
+City
+Ready for delivery
+Document Types
+My Missions
+Lists
+Zone
+Delivery Settings
+Delivery Types
+Products
+Zone/Areas
+Memberships
+Service Jobs
+Sales Invoice
+General Sales Order
+Subscription Sales Order
+Budget Master
+Budget Entries
+Forecasting
+Orders
+Cases
+Ticket order details
+Case Management
+Online Payments
+Logins
+Online Customers
+Customer Groups
+Wallet Transactions
+SerialKey Tracking
+Pages
+Boilerplate
+Stock Verification
+Emarsys
+Emarsys
+Property Type
+Allergy
+Product Class Map
+Product
+Category
+Brand
+SupplierTransactions
+Trial Balance
+Revenue & Expenditure 
+Ledger Summary
+Assets
+Ledger Detailed
+Account Group Summary
+Asset Entry
+Aging Summary
+Aging Detailed
+Account Group Detailed
+Asset Journal
+Tax Detailed
+Tax Summary
+Asset Removal
+Sub Ledger Summary
+Account Vouchers
+Receipts - Settlement
+Credit Note
+Regular Receipt
+Payments - Settlement
+Regular Payments
+Debit Note
+Journal
+Services
+Appointments
+Settings
+Treatment Groups
+Treatment Types
+Service Groups
+Service Availables
+Pricing Types
+Extra Time Types
+Registrations
+Families/Members
+Committees
+Blocks
+Grades
+Marriages
+Divorces
+Deaths
+Complaints
+Program/Project
+Bans
+Masjids
+Lists
+Post a Job
+Archived
+Lists
+Archived
+Selected
+Job Departments
+Leave Request
+Leave Allocation
+Leave Block Lists
+Holiday Lists
+Leave Type
+School Calendar
+Salary Structure
+Salary Component
+Leave Request
+Leave Allocation
+Leave Block List
+Leave Type
+Leave Session
+Loan/Advance Request
+Loan/Advance Approval
+Loan/Advance Entry
+Maid Daily Schedule
+Students
+Student Houses
+Class Group
+Class Room Type
+Medium
+Shift
+Collect Fees
+Fee Master
+Fee Group
+Fee Type
+Student Attendance
+Staff Attendance
+Class Wise Attendance
+Staff Attendance - All
+Employee Promotion
+Exams
+Marks Register
+Grade Map
+Subject Mark Entry
+Class Teacher Map
+Subject Teacher Map
+Classes
+Sections
+Subjects
+Subject Types
+Academic Year
+Academic Calendar
+Academic Class Map
+Payroll Date Settings
+School Events
+Student Achievement
+Library Books
+Library Transaction Types
+Library Book Issue/Return
+Library Book Type
+Library Book Condition
+Library Book Status
+Library Book Category
+Library Dashboard
+Routes
+Vehicles
+Vehicle Driver/Attendant
+Vehicle Types
+Vehicle Ownership Types
+Route Groups
+Hostels
+Hostel Rooms
+Hostel Types
+Room Types
+Student Applications
+Student Transfer / Discontinue Request
+Schools
+Fine Master
+Fine Master Student 
+Albums
+Album Type
+Building
+Attendance Reasons
+Event
+Event Audience Types
+Polls
+Questionnaires
+Questionnaire Sets
+Questionnaire Types
+Questionnaire Answers
+Questionnaire Answer Types
+Sequences
+Caste
+Employee Role
+Designation
+Job Type
+Salary Component Type
+Salary Method
+Salary Slip
+Salary Payment Modes
+Fee Cycles
+Fee Periods
+Payroll Frequency
+Employee Salary Structure
+Time Table Master
+Class Timing
+Fee Due Generation
+Class Subject Map
+Exam Type
+Skill Sets
+Student Assignments
+Assignment Creation
+Lesson Plan
+Vehicle Docs
+Student Transport
+Transport Application
+Vehicle Route
+Staff Transport
+Student Group
+Assign Student Group
+Collect Fee Account Posting
+Student Leave Applications
+Student Application Report
+Students 
+Class Wise Student List
+Student Language Subject Map Report
+New Admissions
+Dashboard
+Dashboard
+Dashboard
+Dashboard
+Dashboard
+Dashboard
+Dashboard
+Dashboard
+Dashboard
+Dashboard
+Dashboard
+Dashboard
+Dashboard
+Promotions
+SocialMedias
+Payment Methods
+Dashboard
+Dashboard
+Push Notification
+Payment Log
+Error Logs
+Students Timetable
+Fee Collection Daily
+Fee Collection Report
+Fee Defaulters List
+Fee Defaulter - Monthly
+Employees  Report
+Employee ID Card
+Salary File
+Employee Leave Consolidated Report
+Route-Vehicles Report
+Transport Details Report
+Student Transport Details Report
+Route Shifting
+Cost Center
+Payment Mode
+Sub Ledger Master
+Balance Sheet
+Assign Class Sections
+Rack
+Vehicle Details Report
+Unit
+Goods Received Note
+Teachers Timetable
+Class section management
+Unit Group
+Inventory Summary Report
+Sales - Product wise
+Stock Card
+Stock Transfer Detail Report
+Bundle Details Report
+Product Wise Bundle Report
+Bundle Wrap
+Bundle UnWrap
+Skills
+Skill Group
+Suppliers
+Employee Time Sheet 
+Employee Final Settlement
+Employee Time Sheet Self
+Salary Slip Review & Publish
+Employee Time Sheet Approval
+Dashboard
+Student Information
+Fee Collection
+Attendances
+Examinations
+Employee
+Rack
+Unit
+Bundle Wrap
+Bundle UnWrap
+Inventory Details
+Product Master
+Brands
+Product Family
+Product Property
+Supplier
+Purchase Order
+Purchase Invoice
+Purchase Return
+Goods Received Note
+Sales Invoice
+Sales Return
+Account Master
+Account Group Master
+Cost Center
+Payment Mode
+Sub Ledger Master
+Student Application Report
+Transport Details Report
+Employees  Report
+Student Final Settlement
+Package Config
+Fee Structure
+Fee Structure Class Map
+Fee Category Map
+Student Information
+Fee Collection
+Examinations
+Employee
+Student Transport
+Staff Transport
+Student Application Report
+Student Report
+School Credit Note
+Refund
+Student Concession
+Fee Due Cancellation
+Mail Fee Due Statement Report
+Chart Of Accounts
+Revenue & Exp By Cost Center
+Cost Center Detailed
+General Entries
+Sub Ledger Detailed
+Vehicle Staff Assign Report
+Staff Transport Details Report
+Student-Staff Combined Transport Report
+Out Standing Tuition Fee
+Caution Deposit Refundable
+Fee Income - Tuition Fee
+Advance Tuition Fee
+Fee Outstanding Summary
+Fee Outstanding Details
+Fee Advance Summary
+Fee Advance Details
+Book Fee Collection
+Online Uniform FeeCollection
+Fee Outstanding Term Summary
+Day Book
+Cash / Bank
+Cost Center Summary
+Cash Flow
+Fund Flow
+WPS
+Academic Calender
+User Device Maps
+Calendar Master
+Time Tables
+Class Subject Period Map
+Student Applications
+Students
+Students Report
+Collect Fees
+Category
+Brands
+Product Family
+Product Property
+Property Type
+Student Promotion
+New
+Types
+Status
+School map
+Questions
+Question Groups
+Exams
+Online Exam Question Map
+Candidate Register
+Exam result
+Candidate Answer
+Exam result entry
+Passage Questions
+Assessment Term
+Remarks Entry
+Mark Entry
+Publish Progress Report
+Circular
+Circular Type
+Students Attendance
+Student ID Card Report
+Student Strength Report 
+Progress Report KG => 2022-2023
+Progress Report 1-2 => 2022-2023
+Progress Report 3-5 => 2022-2023
+Progress Report 6-8 => 2022-2023
+Progress Report 9 => 2022-2023
+Progress Report 11 => 2022-2023
+Progress Report KG
+Progress Report 1-2
+Progress Report 3-5
+Progress Report 6-8
+Progress Report 9
+Progress Report 10
+Progress Report 11
+Progress Report 12
+Interim Report
+Notes
+Lead Report
+Age Criteria
+Functional Period
+Health Entry
+Campus Transfer
+Streams
+Stream Subject Map
+Class Coordinator Map
+Transport Nominal Roll
+Student PickUp Report
+Student Drop Report
+Student Effective Strength Report
+Route Details Report
+Route Vehicle Staff Details Report
+Passenger In Out Summary
+Route-Stops Summary Report
+Seat Availability List
+Event Transport Allocation
+Student TC
+Certificates
+Student TC
+Student early pickup request
+Driver Schedule
+Student daily pick log
+Certificate History
+KG1 Exam Result
+Class 1 - Test Results
+Class 2 Onwards Test Results
+Vacancy Letter
+Lesson Plan
+Class Wise Teacher Report
+Notification Alert Report
+Nominal Rolls Report
+Student Gender Wise Count Report
+Student 2nd Language Summary
+Student 3rd Language Summary
+Students Islamic or Moral Science Summary
+Admission and Withdrawal Register
+Student Siblings Report
+Class Wise Student-Teacher Ratio
+Consolidated Mark Sheet By Class Teacher
+Consolidated Mark Sheet By Subject Teacher
+Result Analysis Report
+Student 3 years performance report
+Class wise student Achievement Report
+Students final result
+Student performance summary report
+Subject wise section performance report
+Intra campus consolidated report
+Class wise 3 year performance report
+Class wise performance report
+Students Admission Detailed Report
+Student Achievement
+Vacancy Letter
+Staff Attendance Report
+Transport In Out Report
+Student Transport Usage Report
+Student Transport Usage Detailed Report
+Staff Attendance
+Stock Taking Report - uniform,Books
+Stock Difference - Branch
+Stock Verification
+Stock Ledger Report
+Stock Difference - Consolidated
+Stock Updation
+Application Forms
+Product Barcode
+Account Transactions
+Monthly Closing
+Employee Leave Salary Settlement
+Driver Schedule Tracker
+Signup Group
+Signups
+Signup Options
+Purchase Request
+Request for Quotation
+RFQ Comparison
+Supplier Contacts
+Tender Master
+Bid Opening
+Dashboard
+Meetings
+Release Slots
+Options Listing
+Admin Listing
+Meeting Follow-ups
+Meeting Requests
+Counselor Corner
+Barcode Generation
+Financial Year Closing
+Trial Balance Dump
+Purchase - Product wise
+Budget Report
+Budget - Trial Balance
+Budget - Revenue and Expenditure
+Budget - Balance Sheet
+Forcast

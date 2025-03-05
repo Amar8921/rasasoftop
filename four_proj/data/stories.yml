@@ -1,0 +1,41 @@
+version: "3.1"
+
+stories:
+  - story: User requests a report with a list
+    steps:
+      - intent: need_list
+      - action: utter_ask_search_term
+      - intent: search_term
+        entities:
+          - search_query: "attendance"
+      - action: action_fetch_menu_names
+
+  - story: User provides search term (alternative entry)
+    steps:
+      - intent: search_term
+      - action: action_fetch_menu_names
+
+  - story: Request report, select menu, provide parameters, and generate
+    steps:
+      - intent: request_report
+      - action: action_yes_no_list
+      - intent: need_list
+      - action: utter_ask_search_term
+      - intent: search_term
+        entities:
+          - search_query: "student attendance"
+      - action: action_fetch_menu_names
+      - intent: select_menu
+        entities:
+          - menu_name: "Student Attendance"
+      - action: action_fetch_action_link
+      - action: action_ask_report_parameter  # Start parameter loop
+      - intent: inform  # User provides *A* parameter (we don't specify which)
+      - action: action_get_report_parameters # Process the parameter
+      - action: action_ask_report_parameter # Determine the next step (ask again, or generate)
+      # NO MORE explicit inform/get/ask steps here!
+
+  - story: Fallback story
+    steps:
+      - intent: nlu_fallback
+      - action: action_default_fallback

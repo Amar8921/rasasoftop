@@ -66,6 +66,21 @@ nlu:
       - [Progress Report KG](menu_name)
       - [Collect Fees](menu_name))
       - [Meetings](menu_name)
+      - [Academic Calendar](menu_name)
+      - [Fee Collection Daily](menu_name)
+      - [Caution Deposit Refundable](menu_name)
+      - [Fee Income - Tuition Fees](menu_name)
+      - [Advance Tuition Fee](menu_name)
+      - [Transport Nominal Roll](menu_name)
+      - [Salary File](menu_name)
+      - [Employee ID Card](menu_name)
+      - [Employees  Report](menu_name)
+      - [Chart Of Accounts](menu_name)
+      - [Cash / Bank](menu_name)
+      - [General Entries](menu_name)
+      - [Aging Detailed](menu_name)
+      - [Cost Center Detailed](menu_name)
+      - [Tax Detailed](menu_name)
   - regex: select_menu
     examples: |
       - Class wise .* report
