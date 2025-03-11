@@ -1,0 +1,54 @@
+version: "3.1"
+
+stories:
+  - story: User requests a report and gets menu with list and create options
+    steps:
+      - intent: greet
+      - action: action_utter_report
+      - intent: request_report
+      - action: action_yes_no_list
+      - intent: need_list
+      - action: utter_ask_search_term
+      - intent: search_term
+        entities:
+          - search_query: "attendance"
+      - action: action_fetch_menu_names
+      - intent: select_menu
+        entities:
+          - menu_name: "Staff Attendance Report" # Example menu with both list and create
+      - action: action_ask_list_or_create # Bot asks "List or Create?"
+      - intent: report_preference_choice # User chooses "Create"
+        entities:
+          - report_preference: "create"
+      - action: action_ask_list_or_create # Or action_handle_menu_selection - now it fetches link based on preference
+
+  - story: User requests a report and gets menu with only list option (or other single option)
+    steps:
+      - intent: greet
+      - action: action_utter_report
+      - intent: request_report
+      - action: action_yes_no_list
+      - intent: need_list
+      - action: utter_ask_search_term
+      - intent: search_term
+        entities:
+          - search_query: "student"
+      - action: action_fetch_menu_names
+      - intent: select_menu
+        entities:
+          - menu_name: "Student List Report" # Example menu with only list OR other single report type
+      - action: action_ask_list_or_create # Action directly opens the available link because only one report type (or neither "list" nor "create" pair) is available.
+
+  - story: User requests a report without a list
+    steps:
+      - intent: greet
+      - action: action_utter_report
+      - intent: request_report
+      - action: action_yes_no_list
+      - intent: no_list
+      - action: utter_no_list
+
+  - story: Fallback story
+    steps:
+      - intent: nlu_fallback
+      - action: utter_default

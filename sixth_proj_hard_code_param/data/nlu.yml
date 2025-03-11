@@ -1,0 +1,286 @@
+version: "3.1"
+
+nlu:
+  - intent: greet
+    examples: |
+      - hi
+      - hello
+      - hey
+      - good morning
+      - good evening
+    
+
+  - intent: request_report
+    examples: |
+      - I need a report
+      - Can you get me a report?
+      - I want a report
+
+  - intent: need_list
+    examples: |
+      - Yes, I need a list
+      - I want a list
+      - yes
+      - yeah
+
+  - intent: no_list
+    examples: |
+      - No, I don't need a list
+      - No
+      - Not really
+  
+  - intent: enter_parameter
+    examples: |
+      - class 1 - Meshaf
+      - class 2 - Meshaf
+      - 2022-2023
+      - 2023-2024
+
+  - intent: search_term
+    examples: |
+      - Search for [attendance](search_query)
+      - Find [fees](search_query)
+      - Show me [library](search_query)
+      - Look up [transport](search_query)
+      - search for [category](search_query)
+      - search for [meetings](search_query)
+      - Search for [student](search_query)            
+      - search for [progressreport](search_query)
+      - search for [marks](search_query)         
+      - Find [fees](search_query)                      
+      - Find me [fees](search_query)                  
+      - Find details about [fees](search_query)          
+      - Look up [transport](search_query)               
+      - Look up information on [transport](search_query)   
+      - Show me [library](search_query)                
+      - Show me details for [library](search_query)     
+      - Display [library](search_query)                  
+      - Can you find [attendance](search_query)        
+      - Could you look up [transport](search_query)     
+      - I need to search [fees](search_query)           
+      - I want to find [library](search_query)          
+      - I am looking for [attendance](search_query)     
+      - Get me [fees](search_query)                     
+      - Get a list of [transport](search_query)       
+      - Provide [library](search_query)               
+      - Give me [attendance](search_query)               
+      - Access [fees](search_query)                     
+      - I want [attendance] list                        
+      - [fees] details please                          
+      - [library] information                        
+      - [transport] lookup                           
+      - Tell me about [meetings](search_query)            
+      - What about [category](search_query)               
+      - Search about [marks](search_query)      
+      - I'd like to inquire about [fees](search_query)  
+      - Let me see [library](search_query)              
+      - Enquire [transport](search_query)   
+      - search for [trial](search_query)              
+
+  - intent: select_menu
+    examples: |
+      - [Attendance Reasons](menu_name) 
+      - [Student Attendance](menu_name) 
+      - [Student Transport Details Report](menu_name) 
+      - [Staff Transport Details Report](menu_name)
+      - [Classwise Attendance](menu_name) 
+      - [Class wise Attendance](menu_name)
+      - [class wise attendance](menu_name)
+      - [Staff Attendance Report](menu_name)
+      - [Meetings](menu_name)
+      - [Collect Fees](menu_name)
+      - [Library Book Category](menu_name)
+      - [Library Book Condition](menu_name)
+      - [Barcode Generation](menu_name)
+      - [Library Book Status](menu_name)
+      - [Library Transaction Types](menu_name)
+      - [Class wise student Achievement Report](menu_name)
+      - [Intra campus consolidated report](menu_name)
+      - [Class wise 3 year performance report](menu_name)
+      - [Class Wise Student-Teacher Ratio](menu_name)
+      - [Class Wise Student List](menu_name)
+      - [Progress Report 10](menu_name)
+      - [Progress Report 12](menu_name)
+      - [Progress Report 6-8](menu_name)
+      - [Progress Report KG](menu_name)
+      - [Assign Student Group](menu_name)
+      - [Fine Master Student](menu_name)
+      - [Student 3rd Language Summary](menu_name)
+      - [Student Effective Strength Report](menu_name)
+      - [Student Language Subject Map Report](menu_name)
+      - [Student TC](menu_name)
+      - [Students Admission Detailed Report](menu_name)
+      - [Students Timetable](menu_name)
+      - [Stock Updation](menu_name)
+      - [Stock Verification](menu_name)
+      - [Stock Difference - Branch](menu_name)
+      - [Stock Ledger Report](menu_name)
+      - [Stock Transfer Detail Report](menu_name)
+      - [Exam results](menu_name)
+      - [Exam result entry](menu_name)
+      - [Product type and Item wise](menu_name)
+      - [Purchase - Product wise](menu_name)
+      - [Academic Calendar](menu_name)
+      - [Fee Collection Daily](menu_name)
+      - [Caution Deposit Refundable](menu_name)
+      - [Fee Income - Tuition Fees](menu_name)
+      - [Advance Tuition Fee](menu_name)
+      - [Transport Nominal Roll](menu_name)
+      - [Salary File](menu_name)
+      - [Employee ID Card](menu_name)
+      - [Employees  Report](menu_name)
+      - [Chart Of Accounts](menu_name)
+      - [Cash / Bank](menu_name)
+      - [General Entries](menu_name)
+      - [Aging Detailed](menu_name)
+      - [Cost Center Detailed](menu_name)
+      - [Tax Detailed](menu_name)
+      - [Caution Deposit Refundable](menu_name)
+      - [Budget - Trial Balance](menu_name)
+      - [Budget - Balance Sheet](menu_name)
+      - [category](menu_name)
+      - [Driver Location](menu_name)
+      - [Fee Periods](menu_name)
+      - [Products](menu_name)
+      - [Customers](menu_name)
+      - [Memberships](menu_name)
+      - [Online Customers](menu_name)
+      - [Suppliers](menu_name)
+      - [Zone/Areas](menu_name)
+      - [Delivery TimeSlots](menu_name)
+      - [Delivery Types](menu_name)
+      - [Leave Block List](menu_name)
+      - [SupplierTransactions](menu_name)
+      - [Marks Register](menu_name)
+      - [Event Transport Allocation](menu_name)
+      - [Admin Listing](menu_name)
+      - [Claims](menu_name)
+      - [Regular Payments](menu_name)
+      - [Payment Methods](menu_name)
+      - [Payment Types](menu_name)
+      - [Salary Payment Modes](menu_name)
+      - [Knet](menu_name)
+      - [Payments - Settlements](menu_name)
+      - [Complaints](menu_name)
+      - [Payroll Date Settings](menu_name)
+      - [Hostel Rooms](menu_name)
+      - [Hostel](menu_name)
+
+  - intent: report_preference_choice
+    examples: |
+      - [create](report_preference)
+      - [list](report_preference)
+      - [report](report_preference)
+      - [details](report_preference)
+
+regex:
+  - name: select_menu
+    pattern: "(Attendance|Student|Staff) .* (Report|Details)"
+  - name: menu_name_hyphenated
+    ppattern: "[a-zA-Z0-9\\s\\-]+(?:\\s*-\\s*[a-zA-Z0-9\\s\\-]+)*"
+
+  - lookup: menu_name
+    examples: |
+      - Attendance Reasons
+      - Student Attendance
+      - Student Transport Details Report
+      - Staff Transport Details Report
+      - Classwise Attendance
+      - Staff Attendance Report
+      - Meetings
+      - Collect Fees
+      - Library Book Category
+      - Library Book Condition
+      - Barcode Generation
+      - Library Book Status
+      - Library Transaction Types
+      - Classwise Student Achievement Report
+      - Intra campus consolidated report
+      - Class wise 3 year performance report
+      - Class Wise Student-Teacher Ratio
+      - Class Wise Student List
+      - Progress Report 10
+      - Progress Report 12
+      - Progress Report 6-8
+      - Progress Report KG
+      - Assign Student Group
+      - Fine Master Student
+      - Student 3rd Language Summary
+      - Student Effective Strength Report
+      - Student Language Subject Map Report
+      - Student TC
+      - Students Admission Detailed Report
+      - Students Timetable
+      - Stock Updation
+      - Stock Verification
+      - Stock Difference - Branch  # HYPHENATED ITEM
+      - Stock Ledger Report
+      - Stock Transfer Detail Report
+      - Exam results
+      - Exam result entry
+      - Product type and Item wise
+      - Purchase - Product wise   
+      - Academic Calendar
+      - Fee Collection Daily
+      - Caution Deposit Refundable
+      - Fee Income - Tuition Fees
+      - Advance Tuition Fee
+      - Transport Nominal Roll
+      - Salary File
+      - Employee ID Card
+      - Employees  Report
+      - Chart Of Accounts
+      - Cash / Bank
+      - General Entries
+      - Aging Detailed
+      - Cost Center Detailed
+      - Tax Detailed
+      - Caution Deposit Refundable
+      - Budget - Trial Balance
+      - Budget - Balance Sheet
+
+  - lookup: search_query
+    examples: |
+      - attendance
+      - progress report
+      - meetings
+      - fees
+      - library
+      - transport
+      - classwise
+      - category
+      - student
+      - marks
+      - trial
+      
+
+  - synonym: attendance
+    examples: |
+      - present
+      - absent
+      - attendance record
+      - roll call
+      - presence
+      - participation
+
+  - synonym: transport
+    examples: |
+      - bus
+      - vehicle
+      - transportation
+      - travel
+      - commute
+      - school bus
+  - synonym: student
+    examples: |
+      - pupils
+      - learners
+      - children
+      - kids
+      - scholars
+  - synonym: report
+    examples: |
+      - record
+      - data
+      - stats
+      - statistics
