@@ -5,15 +5,18 @@ second_proj/.rasa/
 third_proj/.rasa/
 four_proj/.rasa/
 five_proj_create_screen/.rasa/
+proj_report_parameters/.rasa/
 
 first_proj/actions/__pycache__/
 second_proj/actions/__pycache__/
 third_proj/actions/__pycache__/
 four_proj/actions/__pycache__/
 five_proj_create_screen/actions/__pycache__/
+proj_report_parameters/actions/__pycache__/
 
 first_proj/models/
 second_proj/models/
 third_proj/models/
 four_proj/models/
 five_proj_create_screen/models/
+proj_report_parameters/models/

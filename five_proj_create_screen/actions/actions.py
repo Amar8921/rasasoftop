@@ -22,7 +22,7 @@ def get_db_connection():
         conn = pyodbc.connect(
             "DRIVER={SQL Server};"
             "SERVER=192.168.29.100;"
-            "DATABASE=Pearl_2022_Staging;"
+            "DATABASE=Pearl_Staging;"
             "UID=eduegateuser;"
             "PWD=eduegate@123"
         )
@@ -48,6 +48,7 @@ class ActionFetchMenuNames(Action):
             return []
 
         spell = SpellChecker()
+        spell.word_frequency.load_words(["admin"])  # Add "admin" to the spellchecker dictionary
         corrected_query = spell.correction(search_query)
 
         if corrected_query and corrected_query != search_query:
@@ -56,9 +57,9 @@ class ActionFetchMenuNames(Action):
 
         synonyms = {
             "present": "attendance", "absent": "attendance", "roll call": "attendance", "presence": "attendance",
-            "bus": "transport", "vehicle": "transport", "transportation": "transport",
+            "bus": "transport", "transportation": "transport",
             "pupils": "student", "learners": "student", "children": "student",
-            "record": "report", "data": "report"
+            "record": "report", "data": "report",
         }
 
         search_query = synonyms.get(search_query.lower(), search_query) # Use get with default value
@@ -121,13 +122,13 @@ class ActionFetchMenuNames(Action):
         return []
 
 
-class ActionAskListOrCreate(Action): # Or rename to ActionHandleMenuSelection
+class ActionAskListOrCreate(Action):
     def name(self) -> str:
-        return "action_ask_list_or_create" # Or "action_handle_menu_selection"
+        return "action_ask_list_or_create"
 
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[str, Any]) -> List[Dict[str, Any]]:
         menu_name = tracker.get_slot("menu_name")
-        report_preference = tracker.get_slot("report_preference") # Check if report_preference is already set
+        report_preference = tracker.get_slot("report_preference")
 
         if not menu_name:
             dispatcher.utter_message(text="Please select a menu option first.")
@@ -135,8 +136,11 @@ class ActionAskListOrCreate(Action): # Or rename to ActionHandleMenuSelection
 
         menu_name_lowercase = menu_name.strip().lower()
 
-        conn = get_db_connection() # Get database connection
-        if not conn: # Check if connection was successful
+        if tracker.get_slot("menu_name") != menu_name:
+            return [SlotSet("menu_name", menu_name)]
+
+        conn = get_db_connection()
+        if not conn:
             dispatcher.utter_message(text="Sorry, I couldn't connect to the database. Please try again later.")
             return []
 
@@ -168,7 +172,7 @@ class ActionAskListOrCreate(Action): # Or rename to ActionHandleMenuSelection
 
             report_type_action_links = {}
             available_report_types = []
-            menu_display_name = menu_name # Default in case MenuName is not found in results
+            menu_display_name = menu_name
 
             if results:
                 menu_display_name = results[0][2] if results[0][2] else menu_name
@@ -180,10 +184,8 @@ class ActionAskListOrCreate(Action): # Or rename to ActionHandleMenuSelection
                         available_report_types.append(report_type)
 
             unique_report_types = sorted(list(set(available_report_types)))
-            has_list = "list" in unique_report_types
-            has_create = "create" in unique_report_types
 
-            if report_preference: # User has already chosen "list" or "create"
+            if report_preference:
                 action_link = report_type_action_links.get(report_preference)
                 if action_link:
                     link_payload = {
@@ -192,68 +194,52 @@ class ActionAskListOrCreate(Action): # Or rename to ActionHandleMenuSelection
                         "link_url": action_link,
                         "link_text": f"Go to {menu_display_name} ({report_preference.capitalize()})"
                     }
+                    link_payload = json.loads(json.dumps(link_payload))
                     dispatcher.utter_message(json_message=link_payload)
-                    return [SlotSet("search_query", None), SlotSet("menu_name", None), SlotSet("report_preference", None)] # Clear report_preference slot as well
+                    return [SlotSet("search_query", None), SlotSet("menu_name", None), SlotSet("report_preference", None)]
                 else:
                     dispatcher.utter_message(text=f"Error: Action link not found for '{menu_display_name}' ({report_preference}).")
                     return []
-            elif has_list and has_create:
+            elif len(unique_report_types) == 1:
+                # If only one option is available, automatically proceed with it
+                report_type = unique_report_types[0]
+                action_link = report_type_action_links.get(report_type)
+                if action_link:
+                    link_payload = {
+                        "type": "link",
+                        "message": f"Opening **{menu_display_name} ({report_type.capitalize()})**...",
+                        "link_url": action_link,
+                        "link_text": f"Go to {menu_display_name} ({report_type.capitalize()})"
+                    }
+                    link_payload = json.loads(json.dumps(link_payload))
+                    dispatcher.utter_message(json_message=link_payload)
+                    return [SlotSet("search_query", None), SlotSet("menu_name", None), SlotSet("report_preference", None)]
+                else:
+                    dispatcher.utter_message(text=f"Error: Action link not found for '{menu_display_name}' ({report_type}).")
+                    return []
+            elif len(unique_report_types) > 1:
+                available_options = [rt.capitalize() for rt in unique_report_types]
+                
+                response_payload = {
+                    "type": "confirmation",
+                    "confirmation": available_options
+                }
+
+                # Ensure proper JSON encoding
                 dispatcher.utter_message(
-                    text=f"For **{menu_display_name}**, do you want to see a list or create?",
-                    json_message={"type": "menu_options", "options": ["List", "Create"]}
+                    text=f"For {menu_display_name}, please select an option:",
+                    json_message=json.loads(json.dumps(response_payload))  # Ensure correct JSON format
                 )
-                return []
-            elif has_list:
-                report_type = "list"
-                action_link = report_type_action_links.get(report_type)
-                if action_link:
-                    link_payload = {
-                        "type": "link",
-                        "message": f"Opening **{menu_display_name} (List)**...",
-                        "link_url": action_link,
-                        "link_text": f"Go to {menu_display_name} (List)"
-                    }
-                    dispatcher.utter_message(json_message=link_payload)
-                    return [SlotSet("search_query", None), SlotSet("menu_name", None), SlotSet("report_preference", None)] # Clear report_preference slot as well
-                else:
-                    dispatcher.utter_message(text=f"Error: Action link not found for '{menu_display_name}' (List).")
-                    return []
-            elif has_create:
-                report_type = "create"
-                action_link = report_type_action_links.get(report_type)
-                if action_link:
-                    link_payload = {
-                        "type": "link",
-                        "message": f"Opening **{menu_display_name} (Create)**...",
-                        "link_url": action_link,
-                        "link_text": f"Go to {menu_display_name} (Create)"
-                    }
-                    dispatcher.utter_message(json_message=link_payload)
-                    return [SlotSet("search_query", None), SlotSet("menu_name", None), SlotSet("report_preference", None)] # Clear report_preference slot as well
-            elif unique_report_types: # Handle other report types if needed - currently defaults to first available
-                default_report_type = unique_report_types[0]
-                default_action_link = report_type_action_links.get(default_report_type)
-                if default_action_link:
-                    link_payload = {
-                        "type": "link",
-                        "message": f"Opening **{menu_display_name} ({default_report_type.capitalize()})**...",
-                        "link_url": default_action_link,
-                        "link_text": f"Go to {menu_display_name} ({default_report_type.capitalize()})"
-                    }
-                    dispatcher.utter_message(json_message=link_payload)
-                    return [SlotSet("search_query", None), SlotSet("menu_name", None), SlotSet("report_preference", None)] # Clear report_preference slot as well
-                else:
-                    dispatcher.utter_message(text=f"Error: Action link not found for '{menu_display_name}' ({default_report_type}).")
-                    return []
             else:
                 dispatcher.utter_message(text=f"Sorry, no report options are available for **{menu_display_name}**.")
 
         except Exception as e:
-            dispatcher.utter_message(text=f"Database error in ActionAskListOrCreate: {str(e)}") # Or ActionHandleMenuSelection
+            dispatcher.utter_message(text=f"Database error in ActionAskListOrCreate: {str(e)}")
         finally:
             if conn:
                 conn.close()
         return []
+
 
 
 class ActionDefaultFallback(Action):
@@ -277,10 +263,7 @@ class ActionUtterYesNoMenu(Action):
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[str, Any]) -> List[Dict[str, Any]]:
         dispatcher.utter_message(
             text="Do you need a list?",
-            json_message={
-                "type": "confirmation",
-                "confirmation": [{"choices": ["Yes", "No"]}]
-            }
+            json_message={"type": "confirmation", "confirmation": ["Yes", "No"]}
         )
         return []
 
