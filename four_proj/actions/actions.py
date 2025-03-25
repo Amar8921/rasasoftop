@@ -17,7 +17,7 @@ def get_db_connection():
     conn = pyodbc.connect(
         "DRIVER={SQL Server};"
         "SERVER=192.168.29.100;"
-        "DATABASE=Pearl_2022_Staging;"
+        "DATABASE=Pearl_Test;"
         "UID=eduegateuser;"
         "PWD=eduegate@123"
     )

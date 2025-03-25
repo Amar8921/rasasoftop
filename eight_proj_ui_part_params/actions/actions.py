@@ -22,7 +22,7 @@ def get_db_connection():
         conn = pyodbc.connect(
             "DRIVER={SQL Server};"
             "SERVER=192.168.29.100;"
-            "DATABASE=Pearl_Live_Test;"
+            "DATABASE=Pearl_Staging;"
             "UID=eduegateuser;"
             "PWD=eduegate@123"
         )
@@ -42,7 +42,6 @@ class ActionFetchMenuNames(Action):
 
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[str, Any]) -> List[Dict[str, Any]]:
         search_query = tracker.get_slot("search_query")
-        print(f"Search query: {search_query}")
 
         if not search_query:
             dispatcher.utter_message(text="Please provide a search term to find menus.")
@@ -123,6 +122,12 @@ class ActionFetchMenuNames(Action):
         return []
 
 
+import json
+from typing import Any, Dict, List
+from rasa_sdk import Action, Tracker
+from rasa_sdk.executor import CollectingDispatcher
+from rasa_sdk.events import SlotSet
+
 class ActionAskListOrCreate(Action):
     def name(self) -> str:
         return "action_ask_list_or_create"
@@ -130,23 +135,15 @@ class ActionAskListOrCreate(Action):
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[str, Any]) -> List[Dict[str, Any]]:
         menu_name = tracker.get_slot("menu_name")
         report_preference = tracker.get_slot("report_preference")
-        
-        # Always check and reset report_preference if needed at the beginning
-        if report_preference:
-            return_slots = [SlotSet("report_preference", None)]
-            if not menu_name:
-                dispatcher.utter_message(text="Please select a menu option first.")
-                return return_slots
-            # Continue with the reset slot
-        elif not menu_name:
+
+        if not menu_name:
             dispatcher.utter_message(text="Please select a menu option first.")
             return []
 
         menu_name_lowercase = menu_name.strip().lower()
 
-        # Reset report_preference when selecting a new menu
         if tracker.get_slot("menu_name") != menu_name:
-            return [SlotSet("menu_name", menu_name), SlotSet("report_preference", None)]
+            return [SlotSet("menu_name", menu_name)]
 
         conn = get_db_connection()
         if not conn:
@@ -214,8 +211,7 @@ class ActionAskListOrCreate(Action):
                     return [SlotSet("search_query", None), SlotSet("menu_name", None), SlotSet("report_preference", None)]
                 else:
                     dispatcher.utter_message(text=f"Error: Action link not found for '{menu_display_name}' ({report_preference}).")
-                    # Reset report_preference when there's no action link for the preference
-                    return [SlotSet("report_preference", None)]
+                    return []
 
             elif len(unique_report_types) == 1:
                 report_type = unique_report_types[0]
@@ -238,8 +234,7 @@ class ActionAskListOrCreate(Action):
                     return [SlotSet("search_query", None), SlotSet("menu_name", None), SlotSet("report_preference", None)]
                 else:
                     dispatcher.utter_message(text=f"Error: Action link not found for '{menu_display_name}' ({report_type}).")
-                    # Reset report_preference when there's no action link for the report type
-                    return [SlotSet("report_preference", None)]
+                    return []
 
             elif len(unique_report_types) > 1:
                 available_options = [rt.capitalize() for rt in unique_report_types]
@@ -252,17 +247,11 @@ class ActionAskListOrCreate(Action):
                     text=f"For {menu_display_name}, please select an option:",
                     json_message=json.loads(json.dumps(response_payload))
                 )
-                # Reset report_preference when showing options
-                return [SlotSet("report_preference", None)]
             else:
                 dispatcher.utter_message(text=f"Sorry, no report options are available for **{menu_display_name}**.")
-                # Reset report_preference when no options are available
-                return [SlotSet("report_preference", None)]
 
         except Exception as e:
             dispatcher.utter_message(text=f"Database error in ActionAskListOrCreate: {str(e)}")
-            # Reset report_preference on error
-            return [SlotSet("report_preference", None)]
         finally:
             if conn:
                 conn.close()
@@ -307,24 +296,6 @@ class ActionUtterINeedReportMenu(Action):
             json_message={
                 "type": "text_popup",
                 "menu_options": [{"actions": ["I need a report"]}]
-            }
-        )
-        return []
-    
-class ActionUtterAskSearchTerm(Action):
-    def name(self) -> str:
-        return "action_utter_ask_search_term"
-
-    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[str, Any]) -> List[Dict[str, Any]]:
-        dispatcher.utter_message(
-            text="Search for a term to get the list",
-            json_message={
-                "type": "text_popup",
-                "menu_options": [
-                    {"actions": ["Search for class"]},
-                    {"actions": ["Find library"]},
-                    {"actions": ["Look for attendance"]}
-                ]
             }
         )
         return []

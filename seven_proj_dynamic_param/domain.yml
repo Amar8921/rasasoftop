@@ -8,6 +8,7 @@ intents:
   - search_term
   - select_menu
   - report_preference_choice  # New intent for user's "list" or "create" choice
+  - enter_parameter
 
 entities:
   - search_query
@@ -30,13 +31,6 @@ slots:
       - type: from_entity
         entity: menu_name
 
-  # report_type: # Still used, but might be set programmatically in actions too
-  #   type: text
-  #   influence_conversation: false # No need to influence conversation directly from entity, action will handle it.
-  #   mappings:
-  #     - type: from_entity
-  #       entity: report_type
-
   report_preference: # Slot to store user's choice of "list" or "create"
     type: categorical
     values:
@@ -47,6 +41,45 @@ slots:
       - type: from_entity
         entity: report_preference
         intent: report_preference_choice # Only fill from report_preference_choice intent
+
+  report_name:
+    type: text
+    influence_conversation: false
+    mappings: []
+
+
+  report_params:
+    type: list
+    influence_conversation: false
+    mappings: []
+
+  report_action_link:
+    type: text
+    influence_conversation: false
+    mappings: []
+
+  current_param_index:
+    type: float
+    influence_conversation: false
+    mappings: []
+
+  current_param_name:
+    type: text
+    influence_conversation: false
+    mappings: []
+
+  param_values:
+    type: any
+    influence_conversation: false
+    mappings: []
+
+  parameter_value:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: parameter_value
+        intent: enter_parameter
 
 responses:
   utter_ask_search_term:
@@ -79,9 +112,11 @@ actions:
   - action_default_fallback
   - action_yes_no_list
   - action_utter_report
-  - action_utter_ask_search_term
+  - action_ask_report_parameter
+  - action_save_parameter_value
+  - action_generate_report
 
 
 session_config:
-  session_expiration_time: 0
+  session_expiration_time: 60
   carry_over_slots_to_new_session: true

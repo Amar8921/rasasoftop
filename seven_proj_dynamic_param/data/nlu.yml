@@ -9,6 +9,7 @@ nlu:
       - good morning
       - good evening
     
+
   - intent: request_report
     examples: |
       - I need a report
@@ -27,6 +28,20 @@ nlu:
       - No, I don't need a list
       - No
       - Not really
+  
+  - intent: enter_parameter
+    examples: |
+      - class 1 - Meshaf
+      - class 2 - Meshaf
+      - 2022-2023
+      - 2023-2024
+      - PODAR PEARL PRIMARY SCHOOL
+      - PEARL SCHOOL KINDERGARTEN, MADINATNA
+      - PEARL SCHOOL, AL THUMAMA
+      - Thumama ( 2023 - 2024 )
+      - Meshaf (2024 - 2025)
+      - Kindergarten (2024 - 2025)
+      - Westbay (2025 - 2026)
 
   - intent: search_term
     examples: |
@@ -157,6 +172,7 @@ nlu:
       - [Payroll Date Settings](menu_name)
       - [Hostel Rooms](menu_name)
       - [Hostel](menu_name)
+      - [Transport In Out Report](menu_name)
 
   - intent: report_preference_choice
     examples: |

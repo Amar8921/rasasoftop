@@ -1,0 +1,16 @@
+{
+    "ClassID": "select ClassID, ClassDescription from schools.Classes where IsActive = 1",
+    "Class_IDs": "select ClassID,ClassDescription from schools.Classes where IsActive = 1",
+    "CLASS_IDs": "select ClassID,ClassDescription from schools.Classes where IsActive = 1",
+    "AcademicYearID": "select AcademicYearID,Description from schools.AcademicYears where IsActive = 1",
+    "ACDEMICYEARID": "select AcademicYearID,Description from schools.AcademicYears where IsActive = 1",
+    "SchoolID": "select SchoolID,SchoolName from schools.Schools",
+    "ExamGroupID": "select ExamGroupID, ExamGroupName from schools.ExamGroups where IsActive = 1",
+    "EXAM_IDs": "select ExamIID, ExamDescription from schools.Exams where IsActive = 1",
+    "SectionID": "select SectionID,SectionName from schools.Sections",
+    "SECTION_IDs": "select SectionID,SectionName from schools.Sections",
+    "SUBJECTIDs": "select SubjectID,SubjectName from schools.Subjects where IsActive = 1 and SchoolID is not null",
+    "StudentID": "select TOP 5 StudentIID, FirstName from schools.Students where IsActive =1",
+    "RouteID": "select RouteID, RouteCode from schools.Routes where IsActive = 1",
+    "GenderID" : "select DISTINCT GenderID from schools.Students"
+}

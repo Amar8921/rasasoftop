@@ -57,7 +57,7 @@ def get_report_parameters_from_rdl(report_name, report_physical_path=None, hosti
 
 
 # --- Example Usage --- (rest of the example usage code remains the same)
-report_name = "3YearStudentPerformanceReport"
+report_name = "ClassWiseStudentAchievementReport"
 report_physical_path_setting = "C:/SOFTOP_PROJECTS/eduegateerpv1/Presentation/Eduegate.ERP.Admin/Reports/RDL"
 
 report_params = get_report_parameters_from_rdl(report_name, report_physical_path=report_physical_path_setting)

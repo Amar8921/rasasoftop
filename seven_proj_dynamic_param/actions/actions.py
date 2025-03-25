@@ -1,10 +1,11 @@
-# actions/actions.py
 import json
 import pyodbc
+import os
+import xml.etree.ElementTree as ET
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.events import SlotSet, UserUtteranceReverted
-from typing import Any, Dict, List
+from rasa_sdk.events import SlotSet, UserUtteranceReverted, FollowupAction
+from typing import Any, Dict, List, Text
 from spellchecker import SpellChecker
 
 # **Important Security Note:**
@@ -22,7 +23,7 @@ def get_db_connection():
         conn = pyodbc.connect(
             "DRIVER={SQL Server};"
             "SERVER=192.168.29.100;"
-            "DATABASE=Pearl_Live_Test;"
+            "DATABASE=Pearl_Staging;"
             "UID=eduegateuser;"
             "PWD=eduegate@123"
         )
@@ -36,13 +37,79 @@ def get_db_connection():
         return None # Return None to indicate connection failure
 
 
+def get_report_parameters_from_rdl(report_name, report_physical_path=None):
+    """
+    Extracts report parameters from an RDL (Report Definition Language) file.
+    """
+    rdlc_file_path = ""
+    print(f"get_report_parameters_from_rdl received report_name: '{report_name}'")
+    
+    if report_physical_path:
+        rdl_path = os.path.join(report_physical_path, f"{report_name}.rdl")
+        print(f"rdl_path: '{rdl_path}'")
+        if os.path.exists(rdl_path):
+            rdlc_file_path = rdl_path
+    else:
+        # Default path - you should update this to match your environment
+        rdlc_file_path = os.path.join("C:/SOFTOP_PROJECTS/eduegateerpv1/Presentation/Eduegate.ERP.Admin/Reports/RDL", f"{report_name}.rdl")
+    
+    print(f"rdlc_file_path: '{rdlc_file_path}'")
+    
+    if not os.path.exists(rdlc_file_path):
+        print(f"RDL file not found at: {rdlc_file_path}")
+        # Mock return for testing if file doesn't exist
+        return [
+            {'Name': 'ClassID', 'Prompt': 'Select Class', 'Type': 'dropdown'},
+            {'Name': 'AcademicYear', 'Prompt': 'Select year', 'Type': 'dropdown'},
+        ]
+
+    try:
+        tree = ET.parse(rdlc_file_path)
+        root = tree.getroot()
+        namespaces = {'rdl': 'http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition'}
+
+        report_parameters = []
+        report_parameters_element = root.find("rdl:ReportParameters", namespaces)
+
+        if report_parameters_element is not None:
+            for param_element in report_parameters_element.findall("rdl:ReportParameter", namespaces):
+                param_name = param_element.get('Name')
+                prompt_element = param_element.find("rdl:Prompt", namespaces)
+                param_prompt = prompt_element.text if prompt_element is not None else param_name
+                
+                # Determine parameter type (could be extended with more logic)
+                param_type = 'text'  # Default type
+                if 'date' in param_name.lower() or 'time' in param_name.lower():
+                    param_type = 'date'
+                elif 'id' in param_name.lower() and not ('idea' in param_name.lower() or 'identify' in param_name.lower()):
+                    param_type = 'dropdown'
+                elif 'string' in param_name.lower() :
+                    param_type = 'dropdown'
+
+                report_parameters.append({
+                    'Name': param_name, 
+                    'Prompt': param_prompt, 
+                    'Type': param_type
+                })
+
+        return report_parameters
+
+    except ET.ParseError as e:
+        print(f"Error parsing RDL file: {e}")
+        # Return mock data for testing
+        return [
+            {'Name': 'ClassID', 'Prompt': 'Select Class', 'Type': 'dropdown'},
+            {'Name': 'AcademicYear', 'Prompt': 'Select year', 'Type': 'dropdown'},
+        ]
+        
+
+
 class ActionFetchMenuNames(Action):
     def name(self) -> str:
         return "action_fetch_menu_names"
 
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[str, Any]) -> List[Dict[str, Any]]:
         search_query = tracker.get_slot("search_query")
-        print(f"Search query: {search_query}")
 
         if not search_query:
             dispatcher.utter_message(text="Please provide a search term to find menus.")
@@ -130,23 +197,15 @@ class ActionAskListOrCreate(Action):
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[str, Any]) -> List[Dict[str, Any]]:
         menu_name = tracker.get_slot("menu_name")
         report_preference = tracker.get_slot("report_preference")
-        
-        # Always check and reset report_preference if needed at the beginning
-        if report_preference:
-            return_slots = [SlotSet("report_preference", None)]
-            if not menu_name:
-                dispatcher.utter_message(text="Please select a menu option first.")
-                return return_slots
-            # Continue with the reset slot
-        elif not menu_name:
+
+        if not menu_name:
             dispatcher.utter_message(text="Please select a menu option first.")
             return []
 
         menu_name_lowercase = menu_name.strip().lower()
 
-        # Reset report_preference when selecting a new menu
         if tracker.get_slot("menu_name") != menu_name:
-            return [SlotSet("menu_name", menu_name), SlotSet("report_preference", None)]
+            return [SlotSet("menu_name", menu_name)]
 
         conn = get_db_connection()
         if not conn:
@@ -204,18 +263,15 @@ class ActionAskListOrCreate(Action):
                         "link_text": f"Go to {menu_display_name} ({report_preference.capitalize()})"
                     }
 
-                    # **Fix: Extract ReportRDL Name from action_link**
+                    # **Add "report_name" only when report_preference is a report**
                     if "report" in report_preference.lower():
-                        report_parts = action_link.split(",")  # Split the action link
-                        if len(report_parts) >= 3:  # Ensure at least 3 elements exist
-                            link_payload["report_name"] = report_parts[2].strip()  # Use the 3rd element
+                        link_payload["report_name"] = menu_display_name
 
                     dispatcher.utter_message(json_message=json.loads(json.dumps(link_payload)))
                     return [SlotSet("search_query", None), SlotSet("menu_name", None), SlotSet("report_preference", None)]
                 else:
                     dispatcher.utter_message(text=f"Error: Action link not found for '{menu_display_name}' ({report_preference}).")
-                    # Reset report_preference when there's no action link for the preference
-                    return [SlotSet("report_preference", None)]
+                    return []
 
             elif len(unique_report_types) == 1:
                 report_type = unique_report_types[0]
@@ -228,18 +284,15 @@ class ActionAskListOrCreate(Action):
                         "link_text": f"Go to {menu_display_name} ({report_type.capitalize()})"
                     }
 
-                    # **Fix: Extract ReportRDL Name from action_link**
+                    # **Add "report_name" only when report_type is a report**
                     if "report" in report_type.lower():
-                        report_parts = action_link.split(",")  # Split the action link
-                        if len(report_parts) >= 3:  # Ensure at least 3 elements exist
-                            link_payload["report_name"] = report_parts[2].strip()  # Use the 3rd element
+                        link_payload["report_name"] = menu_display_name
 
                     dispatcher.utter_message(json_message=json.loads(json.dumps(link_payload)))
                     return [SlotSet("search_query", None), SlotSet("menu_name", None), SlotSet("report_preference", None)]
                 else:
                     dispatcher.utter_message(text=f"Error: Action link not found for '{menu_display_name}' ({report_type}).")
-                    # Reset report_preference when there's no action link for the report type
-                    return [SlotSet("report_preference", None)]
+                    return []
 
             elif len(unique_report_types) > 1:
                 available_options = [rt.capitalize() for rt in unique_report_types]
@@ -252,23 +305,185 @@ class ActionAskListOrCreate(Action):
                     text=f"For {menu_display_name}, please select an option:",
                     json_message=json.loads(json.dumps(response_payload))
                 )
-                # Reset report_preference when showing options
-                return [SlotSet("report_preference", None)]
             else:
                 dispatcher.utter_message(text=f"Sorry, no report options are available for **{menu_display_name}**.")
-                # Reset report_preference when no options are available
-                return [SlotSet("report_preference", None)]
 
         except Exception as e:
             dispatcher.utter_message(text=f"Database error in ActionAskListOrCreate: {str(e)}")
-            # Reset report_preference on error
-            return [SlotSet("report_preference", None)]
         finally:
             if conn:
                 conn.close()
 
         return []
 
+import json
+
+class BaseActionWithDropdowns(Action):
+    def __init__(self):
+        with open('report_params.json', 'r') as file:
+            self.query_map = json.load(file)
+
+    def name(self) -> str:
+        """Provide a default name to avoid NotImplementedError."""
+        return "base_action_with_dropdowns"
+
+    def get_dropdown_options(self, param_name):
+        """Fetch dropdown options dynamically from the database with ID and Display Name."""
+        if param_name not in self.query_map:
+            return []
+
+        query = self.query_map[param_name]
+        conn = get_db_connection()
+        if not conn:
+            return []
+
+        try:
+            with conn.cursor() as cursor:
+                cursor.execute(query)
+                results = cursor.fetchall()
+
+            return [{"title": row[1], "payload": str(row[0])} for row in results]
+
+        except pyodbc.Error as ex:
+            print(f"Database query error: {ex}")
+            return []
+        finally:
+            conn.close()
+
+
+class ActionAskReportParameter(BaseActionWithDropdowns):
+    def name(self) -> str:
+        return "action_ask_report_parameter"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[str, Any]) -> List[Dict[str, Any]]:
+        report_params = tracker.get_slot("report_params")
+        current_param_index = tracker.get_slot("current_param_index") or 0
+
+        if not report_params or current_param_index >= len(report_params):
+            return [FollowupAction("action_generate_report")]
+
+        current_param = report_params[current_param_index]
+        param_name = current_param['Name']
+
+        excluded_params = {'RootUrl', 'Logo', 'ReportFooter'}
+        if param_name in excluded_params:
+            return [SlotSet("current_param_index", current_param_index + 1), FollowupAction("action_ask_report_parameter")]
+
+        param_prompt = current_param.get('Prompt', f"Please enter {param_name}")
+
+        if param_name in ["SDATE", "EDATE", "From Date", "Till Date", "fromDate", "tilDate"]:
+            dispatcher.utter_message(text=f"{param_prompt} (Please enter the date in DD/MM/YYYY format):")
+            return [SlotSet("current_param_name", param_name)]
+
+        options = self.get_dropdown_options(param_name)
+
+        if options:
+            dropdown_payload = {
+                "type": "confirmation",
+                "confirmation": options  # [{"title": "Class 5 - Primary", "payload": "59"}]
+            }
+            dispatcher.utter_message(text=f"{param_prompt}:", json_message=dropdown_payload)
+        else:
+            dispatcher.utter_message(text=f"{param_prompt} (please type your response):")
+
+        return [SlotSet("current_param_name", param_name)]
+
+
+
+
+
+
+class ActionSaveParameterValue(BaseActionWithDropdowns):
+    def name(self) -> str:
+        return "action_save_parameter_value"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[str, Any]) -> List[Dict[str, Any]]:
+        current_param_name = tracker.get_slot("current_param_name")
+        current_param_index = tracker.get_slot("current_param_index") or 0
+        param_values = tracker.get_slot("param_values") or {}
+
+        latest_message = tracker.latest_message
+        entities = latest_message.get('entities', [])
+        payload = None
+
+        for entity in entities:
+            if entity.get('entity') == 'payload':
+                payload = entity.get('value')
+                break
+
+        if not payload:
+            payload = latest_message.get('metadata', {}).get('payload')
+
+        param_value = payload if payload is not None else latest_message.get('text', '')
+
+        # Ensure we store the ID instead of display name for dropdowns
+        dropdown_options = self.get_dropdown_options(current_param_name)
+        param_value = next((opt["payload"] for opt in dropdown_options if opt["title"] == param_value), param_value)
+
+        param_values[current_param_name] = param_value
+
+        print(f"Saving Parameter - {current_param_name}: {param_value}")
+
+        next_param_index = current_param_index + 1
+
+        return [
+            SlotSet("param_values", param_values),
+            SlotSet("current_param_index", next_param_index),
+            SlotSet("current_param_name", None),
+            FollowupAction("action_ask_report_parameter")
+        ]
+
+
+class ActionGenerateReport(Action):
+    def name(self) -> str:
+        return "action_generate_report"
+        
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[str, Any]) -> List[Dict[str, Any]]:
+        # Get all the collected information
+        report_name = tracker.get_slot("report_name")
+        action_link = tracker.get_slot("report_action_link")
+        param_values = tracker.get_slot("param_values") or {}
+        
+        if not report_name or not action_link:
+            dispatcher.utter_message(text="I'm sorry, but I couldn't find the report information.")
+            return []
+        
+        # Build the URL with parameters
+        # The param_values should now contain IDs instead of display names
+        url = action_link
+        param_string = "&".join([f"{key}={value}" for key, value in param_values.items()])
+        
+        if '?' in url:
+            url += f"&{param_string}"
+        else:
+            url += f"?{param_string}"
+        
+        # Log the final URL for debugging
+        print(f"Report URL with parameters: {url}")
+        
+        # Create a link payload with the report URL
+        link_payload = {
+            "type": "link",
+            "message": f"Generating **{report_name}** report with your selected parameters...",
+            "link_url": url,
+            "link_text": f"View {report_name} Report"
+        }
+        
+        # Generate the link
+        dispatcher.utter_message(json_message=json.loads(json.dumps(link_payload)))
+        
+        # Clear all report-related slots
+        return [
+            SlotSet("report_name", None),
+            SlotSet("report_params", None),
+            SlotSet("report_action_link", None),
+            SlotSet("current_param_index", None),
+            SlotSet("current_param_name", None),
+            SlotSet("param_values", None),
+            SlotSet("search_query", None),
+            SlotSet("menu_name", None),
+            SlotSet("report_preference", None)
+        ]
 
 
 class ActionDefaultFallback(Action):
@@ -307,24 +522,6 @@ class ActionUtterINeedReportMenu(Action):
             json_message={
                 "type": "text_popup",
                 "menu_options": [{"actions": ["I need a report"]}]
-            }
-        )
-        return []
-    
-class ActionUtterAskSearchTerm(Action):
-    def name(self) -> str:
-        return "action_utter_ask_search_term"
-
-    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[str, Any]) -> List[Dict[str, Any]]:
-        dispatcher.utter_message(
-            text="Search for a term to get the list",
-            json_message={
-                "type": "text_popup",
-                "menu_options": [
-                    {"actions": ["Search for class"]},
-                    {"actions": ["Find library"]},
-                    {"actions": ["Look for attendance"]}
-                ]
             }
         )
         return []

@@ -27,6 +27,7 @@ pipeline:
   - name: FallbackClassifier
     threshold: 0.7
 
+
 policies:
   - name: RulePolicy
     core_fallback_action_name: "action_default_fallback"

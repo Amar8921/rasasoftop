@@ -29,7 +29,7 @@ rules:
   - rule: Search for menu after user wants a list
     steps:
       - intent: need_list
-      - action: action_utter_ask_search_term
+      - action: utter_ask_search_term
 
   - rule: Fetch menu names when search term is provided
     steps:

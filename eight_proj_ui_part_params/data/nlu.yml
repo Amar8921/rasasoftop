@@ -9,6 +9,7 @@ nlu:
       - good morning
       - good evening
     
+
   - intent: request_report
     examples: |
       - I need a report

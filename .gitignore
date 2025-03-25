@@ -6,6 +6,8 @@ third_proj/.rasa/
 four_proj/.rasa/
 five_proj_create_screen/.rasa/
 sixth_proj_hard_code_param/.rasa/
+seven_proj_dynamic_param/.rasa/
+eight_proj_ui_part_params/.rasa/
 
 first_proj/actions/__pycache__/
 second_proj/actions/__pycache__/
@@ -13,6 +15,8 @@ third_proj/actions/__pycache__/
 four_proj/actions/__pycache__/
 five_proj_create_screen/actions/__pycache__/
 sixth_proj_hard_code_param/actions/__pycache__/
+seven_proj_dynamic_param/actions/__pycache__/
+eight_proj_ui_part_params/actions/__pycache__/
 
 first_proj/models/
 second_proj/models/
@@ -20,3 +24,8 @@ third_proj/models/
 four_proj/models/
 five_proj_create_screen/models/
 sixth_proj_hard_code_param/models/
+seven_proj_dynamic_param/models/
+eight_proj_ui_part_params/models/
+
+
+five_proj_create_screen/vosk-model-small-en-us-0.15/
