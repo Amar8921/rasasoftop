@@ -1,40 +1,11 @@
 # actions/actions.py
 import json
-import pyodbc
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet, UserUtteranceReverted
 from typing import Any, Dict, List
 from spellchecker import SpellChecker
-
-# **Important Security Note:**
-# NEVER hardcode database credentials in your code, especially in production!
-# Use environment variables, secure configuration files, or a secrets management system.
-# The following `get_db_connection` function is for example purposes only and is INSECURE.
-
-def get_db_connection():
-    """
-    **INSECURE EXAMPLE - DO NOT USE IN PRODUCTION**
-    Establishes a database connection using hardcoded credentials.
-    Replace with secure credential management in a real application.
-    """
-    try:
-        conn = pyodbc.connect(
-            "DRIVER={SQL Server};"
-            "SERVER=192.168.29.100;"
-            "DATABASE=Pearl_Live_Test;"
-            "UID=eduegateuser;"
-            "PWD=eduegate@123"
-        )
-        return conn
-    except pyodbc.Error as ex:
-        sqlstate = ex.args[0]
-        if sqlstate == '28000':
-            print("Database connection failed: Incorrect username or password.")
-        else:
-            print(f"Database connection error: {ex}")
-        return None # Return None to indicate connection failure
-
+from db_query import get_db_connection, fetch_menu_names_from_db, fetch_report_types_from_db
 
 class ActionFetchMenuNames(Action):
     def name(self) -> str:
@@ -49,7 +20,7 @@ class ActionFetchMenuNames(Action):
             return []
 
         spell = SpellChecker()
-        spell.word_frequency.load_words(["admin"])  # Add "admin" to the spellchecker dictionary
+        spell.word_frequency.load_words(["admin"])
         corrected_query = spell.correction(search_query)
 
         if corrected_query and corrected_query != search_query:
@@ -63,38 +34,15 @@ class ActionFetchMenuNames(Action):
             "record": "report", "data": "report",
         }
 
-        search_query = synonyms.get(search_query.lower(), search_query) # Use get with default value
+        search_query = synonyms.get(search_query.lower(), search_query)
 
-        conn = get_db_connection() # Get database connection
-        if not conn: # Check if connection was successful
+        conn = get_db_connection()
+        if not conn:
             dispatcher.utter_message(text="Sorry, I couldn't connect to the database. Please try again later.")
             return []
 
         try:
-            cursor = conn.cursor()
-            query = """
-                SELECT
-                    DISTINCT MenuName,
-                    LEFT(ActionLink, CHARINDEX(',', ActionLink + ',') - 1) AS report_type
-                FROM setting.MenuLinks
-                WHERE ActionLink LIKE ?
-                    AND ParentMenuID IS NOT NULL
-                    AND ActionLink IS NOT NULL
-
-                UNION ALL
-
-                SELECT
-                    DISTINCT MenuName,
-                    LEFT(ActionLink1, CHARINDEX(',', ActionLink1 + ',') - 1) AS report_type
-                FROM setting.MenuLinks
-                WHERE ActionLink1 LIKE ?
-                    AND ParentMenuID IS NOT NULL
-                    AND ActionLink1 IS NOT NULL
-
-                ORDER BY report_type, MenuName;
-            """
-            cursor.execute(query, (f"%{search_query}%", f"%{search_query}%"))
-            results = cursor.fetchall()
+            results = fetch_menu_names_from_db(search_query, conn)  # Use the db_query function
 
             if results:
                 grouped_menu_names = {}
@@ -122,7 +70,6 @@ class ActionFetchMenuNames(Action):
                 conn.close()
         return []
 
-
 class ActionAskListOrCreate(Action):
     def name(self) -> str:
         return "action_ask_list_or_create"
@@ -130,23 +77,22 @@ class ActionAskListOrCreate(Action):
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[str, Any]) -> List[Dict[str, Any]]:
         menu_name = tracker.get_slot("menu_name")
         report_preference = tracker.get_slot("report_preference")
-        
-        # Always check and reset report_preference if needed at the beginning
+
         if report_preference:
             return_slots = [SlotSet("report_preference", None)]
             if not menu_name:
                 dispatcher.utter_message(text="Please select a menu option first.")
                 return return_slots
-            # Continue with the reset slot
+
         elif not menu_name:
             dispatcher.utter_message(text="Please select a menu option first.")
             return []
 
         menu_name_lowercase = menu_name.strip().lower()
 
-        # Reset report_preference when selecting a new menu
         if tracker.get_slot("menu_name") != menu_name:
             return [SlotSet("menu_name", menu_name), SlotSet("report_preference", None)]
+
 
         conn = get_db_connection()
         if not conn:
@@ -154,37 +100,14 @@ class ActionAskListOrCreate(Action):
             return []
 
         try:
-            cursor = conn.cursor()
-            query = """
-                SELECT
-                    LEFT(ActionLink, CHARINDEX(',', ActionLink + ',') - 1) AS report_type,
-                    ActionLink,
-                    MenuName
-                FROM setting.MenuLinks
-                WHERE LOWER(MenuName) = ?
-                    AND ParentMenuID IS NOT NULL
-                    AND ActionLink IS NOT NULL
-
-                UNION ALL
-
-                SELECT
-                    LEFT(ActionLink1, CHARINDEX(',', ActionLink1 + ',') - 1) AS report_type,
-                    ActionLink1 AS ActionLink,
-                    MenuName
-                FROM setting.MenuLinks
-                WHERE LOWER(MenuName) = ?
-                    AND ParentMenuID IS NOT NULL
-                    AND ActionLink1 IS NOT NULL;
-            """
-            cursor.execute(query, (menu_name_lowercase, menu_name_lowercase))
-            results = cursor.fetchall()
+            results = fetch_report_types_from_db(menu_name_lowercase, conn)  # Use db_query function
 
             report_type_action_links = {}
             available_report_types = []
             menu_display_name = menu_name
 
             if results:
-                menu_display_name = results[0][2] if results[0][2] else menu_name
+                menu_display_name = results[0][2] if results[0][2] else menu_name  # Use correct index
                 for row in results:
                     report_type = row[0].strip().lower()
                     action_link = row[1]
@@ -204,17 +127,15 @@ class ActionAskListOrCreate(Action):
                         "link_text": f"Go to {menu_display_name} ({report_preference.capitalize()})"
                     }
 
-                    # **Fix: Extract ReportRDL Name from action_link**
                     if "report" in report_preference.lower():
-                        report_parts = action_link.split(",")  # Split the action link
-                        if len(report_parts) >= 3:  # Ensure at least 3 elements exist
-                            link_payload["report_name"] = report_parts[2].strip()  # Use the 3rd element
+                        report_parts = action_link.split(",")
+                        if len(report_parts) >= 3:
+                            link_payload["report_name"] = report_parts[2].strip()
 
                     dispatcher.utter_message(json_message=json.loads(json.dumps(link_payload)))
                     return [SlotSet("search_query", None), SlotSet("menu_name", None), SlotSet("report_preference", None)]
                 else:
                     dispatcher.utter_message(text=f"Error: Action link not found for '{menu_display_name}' ({report_preference}).")
-                    # Reset report_preference when there's no action link for the preference
                     return [SlotSet("report_preference", None)]
 
             elif len(unique_report_types) == 1:
@@ -228,17 +149,15 @@ class ActionAskListOrCreate(Action):
                         "link_text": f"Go to {menu_display_name} ({report_type.capitalize()})"
                     }
 
-                    # **Fix: Extract ReportRDL Name from action_link**
                     if "report" in report_type.lower():
-                        report_parts = action_link.split(",")  # Split the action link
-                        if len(report_parts) >= 3:  # Ensure at least 3 elements exist
-                            link_payload["report_name"] = report_parts[2].strip()  # Use the 3rd element
+                        report_parts = action_link.split(",")
+                        if len(report_parts) >= 3:
+                            link_payload["report_name"] = report_parts[2].strip()
 
                     dispatcher.utter_message(json_message=json.loads(json.dumps(link_payload)))
                     return [SlotSet("search_query", None), SlotSet("menu_name", None), SlotSet("report_preference", None)]
                 else:
                     dispatcher.utter_message(text=f"Error: Action link not found for '{menu_display_name}' ({report_type}).")
-                    # Reset report_preference when there's no action link for the report type
                     return [SlotSet("report_preference", None)]
 
             elif len(unique_report_types) > 1:
@@ -252,24 +171,20 @@ class ActionAskListOrCreate(Action):
                     text=f"For {menu_display_name}, please select an option:",
                     json_message=json.loads(json.dumps(response_payload))
                 )
-                # Reset report_preference when showing options
                 return [SlotSet("report_preference", None)]
             else:
                 dispatcher.utter_message(text=f"Sorry, no report options are available for **{menu_display_name}**.")
-                # Reset report_preference when no options are available
                 return [SlotSet("report_preference", None)]
+
 
         except Exception as e:
             dispatcher.utter_message(text=f"Database error in ActionAskListOrCreate: {str(e)}")
-            # Reset report_preference on error
             return [SlotSet("report_preference", None)]
         finally:
             if conn:
                 conn.close()
 
         return []
-
-
 
 class ActionDefaultFallback(Action):
     def name(self) -> str:
@@ -284,7 +199,6 @@ class ActionDefaultFallback(Action):
         dispatcher.utter_message(response="utter_default")
         return [UserUtteranceReverted()]
 
-
 class ActionUtterYesNoMenu(Action):
     def name(self) -> str:
         return "action_yes_no_list"
@@ -295,7 +209,6 @@ class ActionUtterYesNoMenu(Action):
             json_message={"type": "confirmation", "confirmation": ["Yes", "No"]}
         )
         return []
-
 
 class ActionUtterINeedReportMenu(Action):
     def name(self) -> str:
